@@ -25,17 +25,20 @@ exercises: 5
 ### Open-Source Models for Sagehen
 
 **Llama 2/3 (Meta):**
+
 - Sizes: 7B, 13B, 70B parameters
-- 7B fits on V100 (16GB); 70B requires A100 (80GB)
+- 7B fits easily on an L40S (48GB); 70B requires A100 (80GB)
 - License: Llama Community License (free for research)
 - Quality comparable to GPT-3.5 on many tasks
 
 **Mistral 7B:**
+
 - Faster than Llama 2 7B with better instruction-following
-- Fits on a single V100 or L40S
+- Fits on a single L40S
 - Good balance of speed and quality
 
 **Phi-2 (Microsoft):**
+
 - Only 2.7B parameters -- runs on CPU if needed
 - Surprisingly capable for its size
 - Best for quick prototyping and low-resource scenarios
@@ -106,10 +109,10 @@ For each scenario, recommend a model type and size:
 ## Solution
 
 1. **Summarizing papers (public data):** Cloud AI (ChatGPT/Claude) is fine
-   since papers are public. If you prefer local: Mistral 7B on V100.
+   since papers are public. If you prefer local: Mistral 7B on an L40S.
 2. **Sentiment classification (proprietary):** Local AI required. BERT
-   (fine-tuned) or Mistral 7B on V100. Batch processing is efficient.
-3. **Object detection in microscopy:** YOLO or ResNet on V100/L40S depending
+   (fine-tuned) or Mistral 7B on an L40S. Batch processing is efficient.
+3. **Object detection in microscopy:** YOLO or ResNet on L40S depending
    on image resolution and batch size.
 4. **Code generation (public data):** Cloud AI is acceptable. Locally: Llama
    13B or Mistral 7B give good code generation results.

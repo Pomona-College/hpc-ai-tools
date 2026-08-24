@@ -139,14 +139,14 @@ RESULT: Chose appropriate AI tool
 ### Llama 2 (Meta)
 ```bash
 # Model sizes available
-7B:   Fast, okay quality, fits in 16GB GPU (V100)
+7B:   Fast, okay quality, fits comfortably on an L40S (48GB)
 13B:  Better quality, needs 32GB GPU (L40S)
 70B:  Best quality, needs 2x A100 (80GB each)
 ```
 
 ### Quick Start
 ```bash
-module load pytorch/2.1
+module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
 conda activate ml_env
 
 python3 << 'EOF'
@@ -328,11 +328,11 @@ Answer these honestly:
 ssh your_netid@sagehen.cs.pomona.edu
 
 # Load PyTorch for local models
-module load pytorch/2.1
+module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
 
 # Create encrypted folder for restricted data
-gocryptfs --init /bigdata/encrypted
-gocryptfs /bigdata/encrypted /mnt/decrypted
+gocryptfs --init /bigdata/lab/<labname>/encrypted
+gocryptfs /bigdata/lab/<labname>/encrypted /scratch/$USER/decrypted
 
 # Run local Llama model
 python3 local_llama_script.py
@@ -353,3 +353,6 @@ nvidia-smi
 ✓ **Respect regulations** - FERPA/HIPAA/export-control aren't suggestions
 
 **When in doubt, contact its-hpc@pomona.edu**
+
+<!-- highlight <labname>/<myusername> placeholders in code blocks; remove if the varnish theme handles this natively -->
+<script>(function(){var CSS='.sh-placeholder{color:#c2410c;font-weight:700}[data-bs-theme="dark"] .sh-placeholder,html.dark .sh-placeholder{color:#fdba74}@media (prefers-color-scheme: dark){[data-bs-theme="auto"] .sh-placeholder{color:#fdba74}}';var RX=/<labname>|<myusername>/g;function firstMatch(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),nodes=[],full='';while(w.nextNode()){nodes.push({n:w.currentNode,s:full.length});full+=w.currentNode.nodeValue;}RX.lastIndex=0;var m;while((m=RX.exec(full))){var s=m.index,e=s+m[0].length,inSpan=false,parts=[];for(var j=0;j<nodes.length;j++){var ns=nodes[j].s,ne=ns+nodes[j].n.nodeValue.length;if(ne<=s||ns>=e)continue;parts.push({node:nodes[j].n,a:Math.max(s-ns,0),b:Math.min(e-ns,nodes[j].n.nodeValue.length)});var p=nodes[j].n.parentNode;while(p&&p!==el){if(p.classList&&p.classList.contains('sh-placeholder')){inSpan=true;break;}p=p.parentNode;}}if(!inSpan&&parts.length)return parts;}return null;}function wrapParts(parts){for(var i=parts.length-1;i>=0;i--){var t=parts[i].node,txt=t.nodeValue,a=parts[i].a,b=parts[i].b;var span=document.createElement('span');span.className='sh-placeholder';span.textContent=txt.slice(a,b);var f=document.createDocumentFragment();if(a>0)f.appendChild(document.createTextNode(txt.slice(0,a)));f.appendChild(span);if(b<txt.length)f.appendChild(document.createTextNode(txt.slice(b)));t.parentNode.replaceChild(f,t);}}function run(){var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);document.querySelectorAll('pre,code').forEach(function(el){var guard=0,parts;while((parts=firstMatch(el))&&guard++<500){wrapParts(parts);}});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}else{run();}})();</script>

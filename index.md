@@ -12,6 +12,7 @@ This workshop is part of the **Pomona College Research Computing Workshop Series
 for researchers using the **Sagehen HPC cluster**.
 
 **Prerequisites:**
+
 - Completed Workshop 13 (HPC Security Orientation)
 - Understanding of data classification (Workshop 14) recommended
 - Required for all users running AI/ML workloads on Sagehen

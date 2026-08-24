@@ -38,8 +38,8 @@ Pomona infrastructure. This decision is about **compliance**, not preference.
 
 - **Data privacy**: Restricted data (FERPA, medical, financial) cannot go to
   external services
-- **Computational power**: Sagehen's 11 GPUs — A100 (80 GB), L40S (48 GB),
-  V100 (16 GB), and A6000 (48 GB ECC) — handle production workloads
+- **Computational power**: Sagehen's 10 GPUs — A100 (80 GB), L40S (48 GB),
+  and RTX PRO 6000 (96 GB ECC) — handle production workloads
 - **Data locality**: Working with large datasets is faster on local storage
   than uploading to cloud services
 - **Reproducibility**: Full control over model versions and environments
@@ -91,24 +91,28 @@ classification, the tool choice is largely determined.
 
 ## Challenge: Match Models to GPUs
 
-For each model below, identify which Sagehen GPU (V100 16 GB, L40S 48 GB,
-A6000 48 GB, or A100 80 GB) is the minimum required:
+For each model below, identify which Sagehen GPU (L40S 48 GB, A100 80 GB,
+or RTX PRO 6000 96 GB) is the minimum required:
 
 1. Phi 2.7B (5GB VRAM)
 2. Llama 13B 4-bit quantized (8GB VRAM)
 3. Llama 70B 4-bit quantized (40GB VRAM)
 4. Stable Diffusion XL (24GB VRAM)
+5. Llama 70B 4-bit serving a 128K-token context (85GB VRAM)
 
 ::::::::::::::::::::::::::::::::::::: solution
 
 ## Solution
 
-1. **Phi 2.7B**: V100 (16GB) -- plenty of headroom
-2. **Llama 13B 4-bit**: V100 (16GB) -- fits with 8GB used
+1. **Phi 2.7B**: L40S (48GB) -- 5GB used, enormous headroom
+2. **Llama 13B 4-bit**: L40S (48GB) -- 8GB used, room for long contexts
 3. **Llama 70B 4-bit**: A100 (80GB) -- needs 40GB, exceeds L40S for comfort
-4. **Stable Diffusion XL**: L40S (48GB) -- needs 24GB, V100 too small
+4. **Stable Diffusion XL**: L40S (48GB) -- 24GB fits, with room for batching
+5. **Llama 70B, 128K context**: RTX PRO 6000 (96GB) -- the KV cache pushes
+   total memory past the A100's 80GB
 
-Start with the smallest sufficient GPU and scale up only if needed.
+The L40S is the least contended card, so small and mid-sized jobs should
+start there. Scale up only when the memory figure genuinely requires it.
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 

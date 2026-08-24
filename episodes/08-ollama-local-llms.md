@@ -21,6 +21,19 @@ exercises: 10
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 
+:::::::::::::::::::::::::::::::::::::: callout
+
+## Why Not Ollama?
+
+Despite this episode's title, we don't use Ollama on Sagehen: there is no
+`ollama` module, and running your own Ollama binary is blocked by permissions.
+Instead we use **Hugging Face Transformers**, which install cleanly into your
+conda environment and give you the same local, private LLM capability. If
+Ollama becomes available cluster-wide later, every concept here transfers
+directly.
+
+::::::::::::::::::::::::::::::::::::::::::::::
+
 ## Setting Up Llama on Sagehen
 
 ### Step 1: Request Model Access
@@ -163,7 +176,7 @@ Write a Slurm batch script that:
 #SBATCH --mem=32GB
 #SBATCH --time=00:10:00
 
-module purge && module load anaconda3 cuda/12.1 cudnn/8.9.2
+module purge && module load anaconda3 cuda/12.2.1
 conda activate llama_env
 
 python3 << 'EOF'

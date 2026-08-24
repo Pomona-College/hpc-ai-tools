@@ -141,7 +141,7 @@ Present 5 scenarios, have learners vote on classification:
 
 **If Hands-On** (assumes SSH access available):
 ```bash
-module load pytorch/2.1
+module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
 # Create environment, load Llama, run query
 # Time: 10-15 minutes for first load, 5 seconds for subsequent queries
 ```

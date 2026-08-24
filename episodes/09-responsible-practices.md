@@ -123,6 +123,7 @@ ChatGPT said: "Models fail because of insufficient data, poor features, and
 overfitting. The solution is more data, better features, and regularization."
 
 **Audit findings:**
+
 - Missing: distribution shift, architecture mismatch, deployment drift
 - Assumes "more data" is always possible
 - Claims a singular "solution" when multiple exist depending on root cause
