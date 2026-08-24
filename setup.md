@@ -40,7 +40,7 @@ If you want to get familiar with external AI tools:
 #### If You Have Sagehen Access
 ```bash
 # Log in
-ssh your_netid@sagehen.cs.pomona.edu
+ssh your_netid@sagehen.hpc.pomona.edu
 
 # Load ML tools
 module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
