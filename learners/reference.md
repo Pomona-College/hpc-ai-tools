@@ -304,7 +304,8 @@ Answer these honestly:
 ## External Resources
 
 ### Official Policy Documents
-- Pomona College AI Policy: [institution-specific URL]
+- Pomona College AI policy: check current guidance with ITS — <its-hpc@pomona.edu> · <https://www.pomona.edu/its/>
+- Data classification rules for Sagehen: [Data Classification and Handling](https://pomona-college.github.io/hpc-data-classification/)
 - FERPA Summary: https://www2.ed.gov/policy/gen/guid/fpco/ferpa/
 - HIPAA Overview: https://www.hhs.gov/hipaa/
 
@@ -325,7 +326,7 @@ Answer these honestly:
 
 ```bash
 # SSH into Sagehen
-ssh your_netid@sagehen.cs.pomona.edu
+ssh your_netid@sagehen.hpc.pomona.edu
 
 # Load PyTorch for local models
 module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
