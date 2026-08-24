@@ -1,0 +1,6 @@
+model,gpu_type,accuracy,latency_ms,memory_gb,throughput_tokens_sec,batch_size
+Llama-7B,V100,0.8867,1022.7,2.8,47.5,8
+Mistral-7B,L40S,0.7854,1164.5,52.0,62.6,8
+Phi-2.7B,A100,0.7562,1452.8,31.0,24.4,8
+Llama-13B,V100,0.9372,443.2,50.1,119.4,8
+GPT-2-small,CPU,0.9112,409.7,64.2,123.3,8
