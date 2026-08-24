@@ -1,0 +1,29 @@
+carpentry: 'incubator'
+title: 'Responsible Use of AI Tools on HPC — Pomona College HPC Workshop Series'
+created: '2026-03-05'
+license: 'CC-BY 4.0'
+source: 'https://github.com/Pomona-College/hpc-ai-tools'
+url: 'https://pomona-college.github.io/hpc-ai-tools/'
+contact: 'its-hpc@pomona.edu'
+description: 'Using AI tools and large language models responsibly in research on Sagehen: data-classification rules, local models and disclosure.'
+branch: 'main'
+life_cycle: 'stable'
+keywords: 'Pomona College, HPC, research computing, ai, artificial-intelligence, llm, large-language-models, responsible-ai, ethics, data-security, sagehen'
+episodes:
+- 01-ai-landscape.md
+- 02-types-of-models.md
+- 03-pomona-ai-policy.md
+- 04-data-classification.md
+- 05-sensitive-data.md
+- 06-local-vs-cloud.md
+- 07-running-on-sagehen.md
+- 08-ollama-local-llms.md
+- 09-responsible-practices.md
+- 10-ethics-next-steps.md
+learners:
+- reference.md
+- setup.md
+instructors:
+- instructor-notes.md
+profiles:
+- learner-profiles.md
