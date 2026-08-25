@@ -5,7 +5,7 @@
 ### PUBLIC Data
 **Definition**: Information that is already public or could be made public without harm
 
-**Can Use**: ChatGPT, Claude, Bard, or any external AI tool
+**Can Use**: ChatGPT, Claude, Gemini, or any external AI tool
 
 **Examples**:
 - Published research papers
@@ -59,7 +59,7 @@
 - **Protected Info**: Names, IDs, grades, course enrollment, transcripts
 - **Penalty**: Institutional loss of federal funding, personal $1000+ per violation
 - **AI Rule**: NEVER use external AI with student data
-- **Safe Method**: Local Llama on Sagehen, or fully anonymize (no names)
+- **Safe Method**: A local model on Sagehen, or fully anonymize (no names)
 
 ### HIPAA (Health Insurance Portability and Accountability Act)
 - **Protects**: Patient health information (PHI)
@@ -86,7 +86,7 @@ START: I want to use an AI tool for my research
    NO → Classify first (see Data Classification section)
 
 2. Is my data PUBLIC?
-   YES → ChatGPT, Claude, Bard, or other external AI is FINE
+   YES → ChatGPT, Claude, Gemini, or other external AI is FINE
    NO → Continue to 3
 
 3. Is my data RESTRICTED (FERPA, HIPAA, export-controlled, PII)?
@@ -102,72 +102,129 @@ RESULT: Chose appropriate AI tool
 
 ---
 
-## Cloud AI Tools Comparison
+## Cloud AI Tools
 
-### ChatGPT (OpenAI)
-- **Cost**: Free (limited), Paid ($20/month)
-- **Quality**: Very good (GPT-4 is top-tier)
-- **Speed**: Fast
-- **Privacy**: Data sent to OpenAI servers
-- **Best for**: General questions, code help, drafting
+The table below deliberately does **not** rank these on quality. Rankings change
+with every release, and quality is not what decides whether you are allowed to
+use a tool. What matters is where the data goes and under what contract.
 
-### Claude (Anthropic)
-- **Cost**: Free (limited), Claude Pro ($20/month)
-- **Quality**: Excellent (comparable to GPT-4)
-- **Speed**: Medium
-- **Privacy**: Data sent to Anthropic servers
-- **Best for**: Long documents, reasoning, detailed explanations
+| Tool | Vendor | Web address | Data goes to |
+|------|--------|-------------|--------------|
+| ChatGPT | OpenAI | <https://chatgpt.com> | OpenAI |
+| Claude | Anthropic | <https://claude.ai> | Anthropic |
+| Gemini | Google | <https://gemini.google.com> | Google |
+| Copilot | Microsoft | <https://copilot.microsoft.com> | Microsoft |
 
-### Bard (Google)
-- **Cost**: Free
-- **Quality**: Good (improving)
-- **Speed**: Fast
-- **Privacy**: Data sent to Google
-- **Best for**: Real-time information, Google services integration
+All four offer a no-cost tier and one or more paid tiers. Prices and tier names
+change often enough that this reference does not quote them.
 
-### Copilot (Microsoft)
-- **Cost**: Free
-- **Quality**: Good (uses GPT-4)
-- **Speed**: Fast
-- **Privacy**: Data sent to Microsoft
-- **Best for**: Code generation, Office integration
+### The distinction that actually matters
+
+**Personal account** — you signed up yourself with an email address. Your input
+is governed by consumer terms, which may permit the vendor to retain it and use
+it to improve their models. Treat anything you type as though it may be read by
+someone else. **PUBLIC data only.**
+
+**Institutionally contracted account** — Pomona has a signed agreement with the
+vendor covering data handling, retention and training. The terms, and therefore
+what you are permitted to put in, depend entirely on what that specific contract
+says.
+
+Do not assume Pomona holds such a contract for a given tool, and do not assume
+one contract's terms apply to another tool. Check the current guidance in
+[Use of AI Tools with Pomona College Data](https://www.pomona.edu/data-governance)
+or ask <its-hpc@pomona.edu> before putting anything that is not PUBLIC into any
+cloud AI service.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Names Change; the Rules Do Not
+
+Google's assistant was **Bard** until February 2024 and is now **Gemini**.
+Model generations turn over every few months. If a tool you are using is not
+listed above, that does not make it approved or unapproved — apply the same
+question: *where does this data go, and under whose terms?*
+
+::::::::::::::::::::::::::::::::::::::::::::::
 
 ---
 
 ## Local AI Models on Sagehen
 
-### Llama 2 (Meta)
-```bash
-# Model sizes available
-7B:   Fast, okay quality, fits comfortably on an L40S (48GB)
-13B:  Better quality, needs 32GB GPU (L40S)
-70B:  Best quality, needs 2x A100 (80GB each)
+### Sizing rule (this outlasts any model list)
+
+Estimate VRAM from parameter count and precision:
+
+```
+VRAM for weights ≈ parameters × bytes-per-parameter
+
+  16-bit (fp16/bf16) → 2 bytes    7B  ≈ 14 GB
+   8-bit             → 1 byte     7B  ≈  7 GB
+   4-bit             → 0.5 bytes  7B  ≈  3.5 GB
+
+Then add headroom for activations and the KV cache — budget 20-40% on top
+for short prompts, and considerably more for long contexts.
 ```
 
+For a mixture-of-experts (MoE) model, memory is set by **total** parameters, not
+the smaller "active" count. A 109B-total model with 17B active still needs the
+full 109B in memory.
+
+### Concrete options as of August 2026
+
+Verify sizes and licences on Hugging Face before relying on them.
+
+| Family | Vendor | Licence | Notes |
+|--------|--------|---------|-------|
+| `gpt-oss-20b` | OpenAI | Apache 2.0 | Runs in ~16 GB; ungated download |
+| `gpt-oss-120b` | OpenAI | Apache 2.0 | Fits a single 80 GB A100 |
+| Qwen3 | Alibaba | Apache 2.0 | Wide size range, strong multilingual |
+| Mistral Small | Mistral AI | Apache 2.0 | Efficient general-purpose |
+| Phi-4-mini | Microsoft | MIT | ~3.8B; smallest useful option |
+| Gemma 3 | Google | Gemma terms | Multimodal; licence is *not* OSI-approved |
+| Llama 4 | Meta | Llama Community | MoE; gated — requires accepting terms |
+
+**Prefer an Apache 2.0 or MIT model** unless you need something specific from a
+gated one. They download without an access request, which removes a step that
+otherwise blocks workshop exercises, and their terms are far simpler to satisfy
+when you publish.
+
 ### Quick Start
+
 ```bash
-module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
+module load miniconda3   # frameworks come from conda, not a module
 conda activate ml_env
 
 python3 << 'EOF'
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-model_name = "meta-llama/Llama-2-7b-chat-hf"
-tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token=True)
+# Apache 2.0 and ungated -- no access request needed.
+model_name = "openai/gpt-oss-20b"
+
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
-    torch_dtype=torch.float16,
+    dtype=torch.bfloat16,
     device_map="auto",
-    use_auth_token=True
 )
 
-# Use it
 inputs = tokenizer("What is machine learning?", return_tensors="pt").to(model.device)
 outputs = model.generate(**inputs, max_new_tokens=100)
-print(tokenizer.decode(outputs[0]))
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 EOF
 ```
+
+For a **gated** model (Llama, and some others) you must first accept the licence
+on its Hugging Face page, create a token, and authenticate:
+
+```bash
+huggingface-cli login          # paste your token when prompted
+```
+
+Then pass `token=True` to both `from_pretrained` calls. The older
+`use_auth_token=` argument still appears in tutorials online but has been
+replaced by `token=`.
 
 ---
 
@@ -177,15 +234,43 @@ EOF
 ```
 Data Analysis
 
-We used ChatGPT-4 (OpenAI) to generate initial hypotheses for data interpretation,
-based on preliminary analysis results. All reported numerical results were
-independently verified through formal statistical analysis. ChatGPT was not used
-in any statistical inference; its role was limited to hypothesis generation and
-preliminary interpretation of already-verified findings.
+We used ChatGPT (OpenAI, GPT-5.4 Thinking, accessed 2026-07-09) to generate
+initial hypotheses for data interpretation, based on preliminary analysis
+results. All reported numerical results were independently verified through
+formal statistical analysis. The model was not used in any statistical
+inference; its role was limited to hypothesis generation and preliminary
+interpretation of already-verified findings.
 
 Model Citation:
-OpenAI. (2024). ChatGPT-4 language model. https://openai.com
+OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model].
+  https://chatgpt.com
 ```
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Name the Model *and* the Date
+
+"ChatGPT" is the product; the model behind it is swapped out regularly and
+older versions are withdrawn. GPT-5.1 was removed from ChatGPT in March 2026
+and GPT-5.2 in June 2026 — a paper citing only "ChatGPT" gives a reader no way
+to know which of those produced the output, and no way to run it again.
+
+Record **product, model version and access date**. That is the most a reader
+can use for a hosted model.
+
+A locally run model is much stronger evidence, because you can pin an exact
+revision that will still be there later. Cite the repository and commit:
+
+```
+Model Citation:
+OpenAI. (2025). gpt-oss-20b [Large language model].
+  https://huggingface.co/openai/gpt-oss-20b (revision a1b2c3d)
+```
+
+This is a real advantage of running models on Sagehen, not merely a compliance
+convenience: **your analysis stays reproducible after the vendor moves on.**
+
+::::::::::::::::::::::::::::::::::::::::::::::
 
 ### For Code
 ```python
@@ -257,7 +342,7 @@ resolved the issue. The solution was verified independently by running the code.
 - Verify anonymization (test removing one line at a time)
 - You have participant consent for AI analysis
 
-**Better Answer**: Use local Llama on Sagehen
+**Better Answer**: Use a local model on Sagehen
 
 ---
 
@@ -310,10 +395,18 @@ Answer these honestly:
 - HIPAA Overview: https://www.hhs.gov/hipaa/
 
 ### Tool Documentation
-- ChatGPT: https://openai.com
-- Claude: https://anthropic.com
-- Llama: https://ai.meta.com/llama/
-- HuggingFace: https://huggingface.co
+- ChatGPT: <https://openai.com/chatgpt>
+- Claude: <https://claude.ai>
+- Gemini: <https://gemini.google.com>
+- gpt-oss (open weights): <https://openai.com/open-models/>
+- Hugging Face model hub: <https://huggingface.co/models>
+- Transformers docs: <https://huggingface.co/docs/transformers>
+
+### Pomona Resources
+- Data Governance, including **Use of AI Tools with Pomona College Data**
+  and **Data Classifications**: <https://www.pomona.edu/data-governance>
+- ITS Policies and Guidelines: <https://www.pomona.edu/administration/its/policies>
+- Research Computing / Sagehen: <its-hpc@pomona.edu>
 
 ### Compliance Resources
 - Institutional Review Board (IRB) Guide
@@ -328,15 +421,19 @@ Answer these honestly:
 # SSH into Sagehen
 ssh your_netid@sagehen.hpc.pomona.edu
 
-# Load PyTorch for local models
-module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
+# Load conda; frameworks live in your conda env, not a module
+module load miniconda3
+conda activate ml_env
 
 # Create encrypted folder for restricted data
 gocryptfs --init /bigdata/lab/<labname>/encrypted
 gocryptfs /bigdata/lab/<labname>/encrypted /scratch/$USER/decrypted
 
-# Run local Llama model
-python3 local_llama_script.py
+# Keep model weights off your /rhome quota
+export HF_HOME=/bigdata/lab/<labname>/huggingface_cache
+
+# Run a local model
+python3 local_llm_script.py
 
 # Check GPU availability
 nvidia-smi

@@ -31,7 +31,7 @@ Modern AI makes plagiarism easier but also more detectable. Requirements:
 - Describe your modifications and verification
 
 **Example disclosure:**
-"I used Llama 2 (7B-chat) running on Sagehen HPC to generate initial outlines.
+"I used gpt-oss-20b running on Sagehen HPC to generate initial outlines.
 The model produced: [quote]. I then revised and verified all claims with primary
 sources."
 
@@ -51,7 +51,7 @@ AI models generate plausible-sounding text that is sometimes false. LLMs
 
 ## Hallucinations Affect All Models
 
-Both cloud and local models hallucinate. ChatGPT, Claude, and Llama all
+Both cloud and local models hallucinate. Hosted and local models alike
 confidently generate false information. Never trust AI output without
 verification, especially in research.
 
@@ -63,7 +63,7 @@ verification, especially in research.
 
 ```
 Statistical analyses were performed in Python 3.11. For interpretation of
-preliminary results, we used Llama-2-7b-chat (Meta) on Pomona's Sagehen HPC
+preliminary results, we used gpt-oss-20b (OpenAI, Apache 2.0) on Pomona's Sagehen HPC
 to generate initial hypotheses, which we then tested using formal statistical
 tests. All reported results are based on independent analysis of raw data.
 ```
@@ -71,7 +71,7 @@ tests. All reported results are based on independent analysis of raw data.
 **In Code Comments:**
 
 ```python
-# DISCLOSURE: Initial analysis drafted with local Llama model.
+# DISCLOSURE: Initial analysis drafted with a local model on Sagehen.
 # All numerical results independently verified against raw data.
 # AI was not used for statistical inference.
 ```
@@ -96,7 +96,7 @@ later, the integrity violation is far more damaging than the admission.
 
 Training and running large models consumes significant energy. Mitigate by:
 
-- Using smaller models when possible (Phi instead of Llama-70B)
+- Using smaller models when possible (Phi-4-mini instead of a 100B-class model)
 - Quantizing models (4-bit instead of 32-bit)
 - Batching work for efficiency
 - Considering environmental impact when choosing scale

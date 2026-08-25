@@ -31,7 +31,7 @@ Information that is already public or could be made public without harm.
 Repository), conference presentations, general knowledge, anonymous aggregated
 statistics.
 
-**AI Tool Policy:** May use external AI (ChatGPT, Claude, etc.)
+**AI Tool Policy:** May use external AI (ChatGPT, Claude, Gemini, etc.)
 
 ### Tier 2: PROPRIETARY
 
@@ -87,7 +87,7 @@ privacy office.
 
 ## Real-World Classification Examples
 
-**Student course evaluations:** RESTRICTED (FERPA). Use local Llama on Sagehen.
+**Student course evaluations:** RESTRICTED (FERPA). Use a local model on Sagehen.
 
 **CSV with columns [ID, Age, Income, Disease_Status]:** Could be RESTRICTED if
 ID is a real student ID. Remove the ID column to create a PUBLIC version.

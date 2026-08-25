@@ -116,7 +116,7 @@ Mitigation:
 
 1. **Classify your data** using the decision tree from Episode 4
 2. **Set up your environment** on Sagehen following Episode 7
-3. **Start small** with Phi or Mistral 7B before scaling up
+3. **Start small** with Phi-4-mini or an 8B-class model before scaling up
 4. **Document everything** -- AI usage logs, verification steps, disclosures
 5. **Stay current** with evolving institutional policies and AI capabilities
 6. **Ask for help** at its-hpc@pomona.edu whenever uncertain
@@ -139,7 +139,7 @@ For your research project (real or hypothetical):
 
 **Example for genomics research:**
 
-"Gene annotation analysis: We used Llama-2-7b-chat running on Pomona's Sagehen
+"Gene annotation analysis: We used gpt-oss-20b running on Pomona's Sagehen
 HPC to generate initial literature review outlines and suggest potential
 regulatory elements. These AI-generated suggestions were not used directly;
 they served as hypothesis-generation tools. All reported results (promoter

@@ -9,15 +9,34 @@
 - Optional: Access to Sagehen HPC (not required, but helpful for local AI demo)
 
 ### No Installation Required!
-This workshop uses cloud AI tools (ChatGPT, Claude, Bard) and optional local setup. No special software needs to be installed in advance.
+This workshop uses cloud AI assistants and an optional local setup. No special
+software needs to be installed in advance.
 
 ### Optional: Try the Tools in Advance
 
-If you want to get familiar with external AI tools:
+If you want to get familiar with external AI tools, the three most commonly used
+at Pomona are:
 
-- **ChatGPT**: https://chat.openai.com (free tier available)
-- **Claude**: https://claude.ai (free tier available)
-- **Bard**: https://bard.google.com (free tier available)
+- **ChatGPT** (OpenAI): <https://chatgpt.com>
+- **Claude** (Anthropic): <https://claude.ai>
+- **Gemini** (Google): <https://gemini.google.com>
+
+Each offers a no-cost tier. Sign in with a personal account for the workshop
+exercises — we will only ever use PUBLIC example data in them.
+
+:::::::::::::::::::::::::::::::::::::: callout
+
+## Product Names Change Faster Than This Lesson
+
+Google's assistant was called **Bard** until February 2024, when it was renamed
+**Gemini**; `bard.google.com` now redirects to `gemini.google.com`. Similarly,
+`chat.openai.com` now redirects to `chatgpt.com`.
+
+Expect names, tiers and model numbers to keep moving. Nothing in this workshop
+depends on a particular product — the rules you will learn are about **the data
+you are handling**, which is exactly why they outlast the tools.
+
+::::::::::::::::::::::::::::::::::::::::::::::
 
 ## During the Workshop
 
@@ -25,8 +44,8 @@ If you want to get familiar with external AI tools:
 
 #### External AI (Cloud-Based)
 
-- ChatGPT, Claude, or Bard for examples
-- Your Pomona email or personal account
+- ChatGPT, Claude or Gemini for examples
+- A personal account is fine; we use PUBLIC data only
 - Works from any browser
 
 #### Local AI (Optional, for sensitive data)
@@ -42,9 +61,10 @@ If you want to get familiar with external AI tools:
 # Log in
 ssh your_netid@sagehen.hpc.pomona.edu
 
-# Load ML tools
-module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
+# Load conda. There is no pytorch/tensorflow module on Sagehen --
+# frameworks live inside your conda environment.
 module load miniconda3
+conda activate ml_env
 ```
 
 #### If You Don't Have Sagehen Access
@@ -79,7 +99,7 @@ This is primarily a **concepts and policy workshop**, not a coding workshop.
 
 ### Part 4: Practical Implementation (Optional Hands-On)
 
-- Setting up local Llama model (for RESTRICTED data)
+- Setting up a local model on Sagehen (for RESTRICTED data)
 - Building responsible AI workflows
 - Asking for help from ITS
 
@@ -97,8 +117,8 @@ You'll learn to categorize your research data:
 
 Given data classification, choose appropriate tool:
 
-- ChatGPT/Claude/Bard? (Only for PUBLIC)
-- Local Llama on Sagehen? (For RESTRICTED)
+- ChatGPT/Claude/Gemini? (Only for PUBLIC)
+- A local open-weight model on Sagehen? (For PROPRIETARY and RESTRICTED)
 
 ### 3. Compliance (Essential Knowledge)
 
@@ -158,7 +178,8 @@ This helps us pitch at the right level!
 
 ### Resources to Review (Optional)
 
-- Pomona College AI Policy (will be linked in Episode 2)
+- [Use of AI Tools with Pomona College Data](https://www.pomona.edu/data-governance)
+  (campus login required; covered in Episode 3)
 - FERPA Overview: https://www2.ed.gov/policy/gen/guid/fpco/ferpa/
 - HIPAA Basics: https://www.hhs.gov/hipaa/
 
@@ -198,8 +219,8 @@ Before the workshop, if you encounter any issues:
 
 After the workshop, continue learning:
 
-- Pomona AI Policy (full text)
-- Local Llama setup guide
+- [Use of AI Tools with Pomona College Data](https://www.pomona.edu/data-governance) (full text)
+- Local model setup guide
 - Compliance checklists
 - Case studies and examples
 

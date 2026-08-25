@@ -1,5 +1,5 @@
 ---
-title: "Ollama and Local LLMs"
+title: "Running Local LLMs on Sagehen"
 teaching: 15
 exercises: 10
 ---
@@ -25,31 +25,44 @@ exercises: 10
 
 ## Why Not Ollama?
 
-Despite this episode's title, we don't use Ollama on Sagehen: there is no
-`ollama` module, and running your own Ollama binary is blocked by permissions.
-Instead we use **Hugging Face Transformers**, which install cleanly into your
-conda environment and give you the same local, private LLM capability. If
-Ollama becomes available cluster-wide later, every concept here transfers
-directly.
+Ollama is the tool most guides reach for, so it is worth saying plainly: we do
+not use it on Sagehen. There is no `ollama` module, and running your own Ollama
+binary is blocked by permissions.
+
+Instead we use **Hugging Face Transformers**, which installs cleanly into your
+conda environment and gives you the same local, private LLM capability with far
+more control over quantization and model revisions. If Ollama becomes available
+cluster-wide later, every concept here transfers directly.
+
+(The file name for this episode still says `ollama` so that existing links keep
+working.)
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 
-## Setting Up Llama on Sagehen
+## Setting Up a Local LLM on Sagehen
 
-### Step 1: Request Model Access
+### Step 1: Choose a Model
 
-Llama models require accepting a license:
+We use `openai/gpt-oss-20b`. It is Apache 2.0 licensed and **ungated**, so it
+downloads without an access request — which matters in a workshop where twenty
+people would otherwise each be waiting on licence approval.
 
-1. Visit `https://huggingface.co/meta-llama/Llama-2-7b-chat-hf`
-2. Click "Request Access" and accept the license
-3. Generate a Hugging Face token for authentication
+Some models are **gated** and do require approval. Llama is the common example:
+
+1. Visit the model page, for example
+   `https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct`
+2. Click "Request Access" and accept the licence
+3. Create a Hugging Face token and run `huggingface-cli login`
+
+Approval is usually quick but is not instant, and it is not guaranteed. Plan
+around it rather than discovering it mid-job.
 
 ### Step 2: Create Environment and Install
 
 ```bash
 module load anaconda3
-conda create -n llama_env python=3.11
-conda activate llama_env
+conda create -n llm_env python=3.11
+conda activate llm_env
 pip install transformers torch accelerate safetensors bitsandbytes
 ```
 
@@ -59,19 +72,36 @@ pip install transformers torch accelerate safetensors bitsandbytes
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-model_name = "meta-llama/Llama-2-7b-chat-hf"
+model_name = "openai/gpt-oss-20b"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
-    torch_dtype=torch.float16,
+    dtype=torch.bfloat16,
     device_map="auto"
 )
 
 prompt = "Explain photosynthesis in simple terms."
-inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
-outputs = model.generate(**inputs, max_length=200)
+inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+outputs = model.generate(**inputs, max_new_tokens=200)
 print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 ```
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Set the Cache Directory Before You Download
+
+Model weights are large and Hugging Face caches them under `~/.cache` by
+default, which will consume your 100 GB `/rhome` quota quickly. Point the cache
+at your lab's storage instead:
+
+```bash
+export HF_HOME=/bigdata/lab/<labname>/huggingface_cache
+```
+
+Put that line in your job script. Do **not** cache to `/scratch` — it is
+deleted when the job ends, so you would re-download every run.
+
+::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Using 4-bit Quantization
 
@@ -88,11 +118,11 @@ bnb_config = BitsAndBytesConfig(
 )
 
 model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Llama-2-70b-chat-hf",
+    "Qwen/Qwen3-32B",
     quantization_config=bnb_config,
     device_map="auto"
 )
-# 70B model now fits in ~40GB instead of 140GB
+# 32B model now fits in ~16GB instead of ~64GB
 ```
 
 ## Building a Private AI Pipeline
@@ -101,10 +131,10 @@ For processing restricted data where nothing leaves Sagehen:
 
 ```python
 class LocalAIPipeline:
-    def __init__(self, model_name="meta-llama/Llama-2-7b-chat-hf"):
+    def __init__(self, model_name="openai/gpt-oss-20b"):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_name, torch_dtype=torch.float16, device_map="auto"
+            model_name, dtype=torch.bfloat16, device_map="auto"
         )
 
     def analyze(self, text, task="summarize"):
@@ -131,7 +161,8 @@ from datetime import datetime
 
 usage_log = {
     "timestamp": datetime.now().isoformat(),
-    "model": "Llama-2-7b-chat",
+    "model": "openai/gpt-oss-20b",
+    "model_revision": "a1b2c3d",   # pin the exact weights for reproducibility
     "data_type": "Restricted (FERPA)",
     "task": "Sentiment classification",
     "input_tokens": 500,
@@ -161,7 +192,7 @@ quality-efficiency tradeoff is acceptable.
 Write a Slurm batch script that:
 
 1. Loads modules and activates a conda environment
-2. Loads Llama 2 7B with half precision
+2. Loads `gpt-oss-20b` in bfloat16
 3. Asks it a question about machine learning
 4. Times the inference and prints the result
 
@@ -171,22 +202,26 @@ Write a Slurm batch script that:
 
 ```bash
 #!/bin/bash
+#SBATCH --job-name=llm-inference
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem=32GB
 #SBATCH --time=00:10:00
 
 module purge && module load anaconda3 cuda/12.2.1
-conda activate llama_env
+conda activate llm_env
+
+# Keep model weights off your /rhome quota
+export HF_HOME=/bigdata/lab/<labname>/huggingface_cache
 
 python3 << 'EOF'
 import time, torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-model_name = "meta-llama/Llama-2-7b-chat-hf"
+model_name = "openai/gpt-oss-20b"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
-    model_name, torch_dtype=torch.float16, device_map="auto")
+    model_name, dtype=torch.bfloat16, device_map="auto")
 
 question = "What is machine learning?"
 inputs = tokenizer(question, return_tensors="pt").to(model.device)
@@ -204,9 +239,14 @@ EOF
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- Open-source LLMs (Llama, Mistral, Phi) run locally on Sagehen GPUs
+- Open-weight LLMs (gpt-oss, Qwen, Mistral, Phi) run locally on Sagehen GPUs
+- Prefer ungated, permissively licensed models -- no access request to wait on
 - 4-bit quantization reduces memory by 75% with minimal quality loss
+- Set `HF_HOME` to lab storage so weights do not fill your `/rhome` quota
 - Build private pipelines for restricted data that never leaves Sagehen
-- Log AI usage for Pomona compliance with timestamps, model, and data type
+- Log AI usage for Pomona compliance with timestamps, model, revision and data type
 
 ::::::::::::::::::::::::::::::::::::::::::::::
+
+<!-- highlight <labname>/<myusername> placeholders in code blocks; remove if the varnish theme handles this natively -->
+<script>(function(){var CSS='.sh-placeholder{color:#c2410c;font-weight:700}[data-bs-theme="dark"] .sh-placeholder,html.dark .sh-placeholder{color:#fdba74}@media (prefers-color-scheme: dark){[data-bs-theme="auto"] .sh-placeholder{color:#fdba74}}';var RX=/<labname>|<myusername>/g;function firstMatch(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),nodes=[],full='';while(w.nextNode()){nodes.push({n:w.currentNode,s:full.length});full+=w.currentNode.nodeValue;}RX.lastIndex=0;var m;while((m=RX.exec(full))){var s=m.index,e=s+m[0].length,inSpan=false,parts=[];for(var j=0;j<nodes.length;j++){var ns=nodes[j].s,ne=ns+nodes[j].n.nodeValue.length;if(ne<=s||ns>=e)continue;parts.push({node:nodes[j].n,a:Math.max(s-ns,0),b:Math.min(e-ns,nodes[j].n.nodeValue.length)});var p=nodes[j].n.parentNode;while(p&&p!==el){if(p.classList&&p.classList.contains('sh-placeholder')){inSpan=true;break;}p=p.parentNode;}}if(!inSpan&&parts.length)return parts;}return null;}function wrapParts(parts){for(var i=parts.length-1;i>=0;i--){var t=parts[i].node,txt=t.nodeValue,a=parts[i].a,b=parts[i].b;var span=document.createElement('span');span.className='sh-placeholder';span.textContent=txt.slice(a,b);var f=document.createDocumentFragment();if(a>0)f.appendChild(document.createTextNode(txt.slice(0,a)));f.appendChild(span);if(b<txt.length)f.appendChild(document.createTextNode(txt.slice(b)));t.parentNode.replaceChild(f,t);}}function run(){var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);document.querySelectorAll('pre,code').forEach(function(el){var guard=0,parts;while((parts=firstMatch(el))&&guard++<500){wrapParts(parts);}});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}else{run();}})();</script>
