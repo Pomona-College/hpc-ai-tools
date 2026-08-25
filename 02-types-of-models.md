@@ -22,26 +22,53 @@ exercises: 5
 
 ## Large Language Models in Detail
 
-### Open-Source Models for Sagehen
+### Open-Weight Models for Sagehen
 
-**Llama 2/3 (Meta):**
+Specific models turn over quickly. Choose along three axes that do not:
+**licence**, **size**, and whether the download is **gated**.
 
-- Sizes: 7B, 13B, 70B parameters
-- 7B fits easily on an L40S (48GB); 70B requires A100 (80GB)
-- License: Llama Community License (free for research)
-- Quality comparable to GPT-3.5 on many tasks
+*The examples below are current as of August 2026.*
 
-**Mistral 7B:**
+**gpt-oss (OpenAI)** — `gpt-oss-20b`, `gpt-oss-120b`
 
-- Faster than Llama 2 7B with better instruction-following
-- Fits on a single L40S
-- Good balance of speed and quality
+- Apache 2.0, ungated: `pip install` and go, no access request
+- 20b runs in about 16 GB; 120b fits a single A100 (80 GB)
+- The path of least resistance for workshop work and for publication
 
-**Phi-2 (Microsoft):**
+**Qwen3 (Alibaba)**
 
-- Only 2.7B parameters -- runs on CPU if needed
-- Surprisingly capable for its size
-- Best for quick prototyping and low-resource scenarios
+- Apache 2.0, ungated, unusually wide range of sizes
+- Strong multilingual coverage — worth knowing if your corpus is not English
+
+**Mistral Small (Mistral AI)**
+
+- Apache 2.0; efficient general-purpose model that fits a single L40S
+
+**Phi-4-mini (Microsoft)**
+
+- MIT licence, about 3.8B parameters
+- The smallest thing here that is still useful; good for prototyping a pipeline
+  before committing GPU hours
+
+**Gemma 3 (Google)** — multimodal, handles image input. Note the licence is
+Google's own Gemma terms, **not** an OSI-approved open-source licence.
+
+**Llama 4 (Meta)** — mixture-of-experts; Scout is 109B total / 17B active.
+Requires accepting the Llama Community Licence before download.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Prefer Ungated Models Unless You Need Otherwise
+
+A gated model (Llama, among others) means: accept a licence on the model's
+page, generate a token, then authenticate before downloading. That is fine for
+sustained project work, but it stalls a workshop and adds a licence term you
+must honour at publication.
+
+Unless a gated model gives you something you specifically need, start with an
+Apache 2.0 or MIT one.
+
+::::::::::::::::::::::::::::::::::::::::::::::
 
 ### Quantization: Making Models Smaller
 
@@ -84,9 +111,9 @@ prediction models. Often require specialized data preprocessing.
 
 Begin with the smallest model that meets your quality needs:
 
-1. Try Phi 2.7B or Mistral 7B first
-2. If quality is insufficient, scale to Llama 13B
-3. Use Llama 70B only when smaller models clearly underperform
+1. Try Phi-4-mini or an 8B-class model such as Qwen3 8B first
+2. If quality is insufficient, scale to a 20-30B model such as `gpt-oss-20b`
+3. Use a 100B-class model only when smaller ones clearly underperform
 4. Always use 4-bit quantization unless you need full precision
 
 This conserves GPU resources and reduces queue wait times on Sagehen.
@@ -108,14 +135,18 @@ For each scenario, recommend a model type and size:
 
 ## Solution
 
-1. **Summarizing papers (public data):** Cloud AI (ChatGPT/Claude) is fine
-   since papers are public. If you prefer local: Mistral 7B on an L40S.
-2. **Sentiment classification (proprietary):** Local AI required. BERT
-   (fine-tuned) or Mistral 7B on an L40S. Batch processing is efficient.
+1. **Summarizing papers (public data):** Cloud AI is fine since papers are
+   public. If you prefer local: an 8B-class model on an L40S.
+2. **Sentiment classification (proprietary):** Local AI required. A fine-tuned
+   encoder such as BERT, or an 8B-class instruct model, on an L40S. Batch
+   processing is efficient.
 3. **Object detection in microscopy:** YOLO or ResNet on L40S depending
    on image resolution and batch size.
-4. **Code generation (public data):** Cloud AI is acceptable. Locally: Llama
-   13B or Mistral 7B give good code generation results.
+4. **Code generation (public data):** Cloud AI is acceptable. Locally,
+   `gpt-oss-20b` on an L40S gives good code generation results.
+
+Note that only scenario 2's answer was forced by the *data*. The others were
+choices about cost and convenience — which is the normal case.
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -123,7 +154,8 @@ For each scenario, recommend a model type and size:
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- LLMs range from 2.7B (Phi) to 70B+ (Llama) parameters with varying quality
+- Useful local LLMs range from about 4B to over 100B parameters
+- Choose on licence, size and whether the download is gated -- not on leaderboards
 - Quantization (4-bit) reduces memory by 75% with minimal quality loss
 - Vision models (YOLO, Stable Diffusion) and scientific ML have specialized uses
 - Start with the smallest model that meets your quality threshold and scale up

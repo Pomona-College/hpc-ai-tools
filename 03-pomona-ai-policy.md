@@ -22,9 +22,28 @@ exercises: 5
 
 ## Pomona's AI Tool Policy
 
-**Official Title:** "Guideline - Use of AI Tools with Pomona College Data"
+**Official title:** "Use of AI Tools with Pomona College Data" — guidance on
+aligning AI usage with Pomona's data governance structure and policies.
 
-**Core Principle:** Data classification determines which tools you can use.
+**Where to find it:** listed under Policies and Guidelines on the
+[Data Governance page](https://www.pomona.edu/data-governance). The document
+itself is in Box and requires campus login.
+
+**Core principle:** data classification determines which tools you can use.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## This Episode Summarises; the Guideline Governs
+
+What follows is a working summary for teaching. The Data Governance page is
+authoritative and is revised as tools and contracts change. Where this lesson
+and the current guideline disagree, **the guideline wins** — and please tell
+<its-hpc@pomona.edu> so the lesson gets fixed.
+
+The same page also holds the **Data Classifications** document that defines the
+tiers used throughout this workshop.
+
+::::::::::::::::::::::::::::::::::::::::::::::
 
 ### Key Policy Principles
 
@@ -38,7 +57,7 @@ exercises: 5
 
 ```
 PUBLIC data
-  External AI: OK (ChatGPT, Claude, Bard, etc.)
+  External AI: OK (ChatGPT, Claude, Gemini, etc.)
   Local AI: OK (Sagehen)
 
 PROPRIETARY data

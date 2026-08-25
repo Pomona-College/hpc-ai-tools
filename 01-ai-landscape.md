@@ -54,9 +54,24 @@ Pomona infrastructure. This decision is about **compliance**, not preference.
 Gemini (Google). Per-token pricing; best for quick queries with non-sensitive
 data.
 
-**Local (open-source, can run on Sagehen):** Llama 2/3 (Meta), Mistral,
-Phi (Microsoft), Qwen. Sizes range from 7B to 70B parameters (15GB-350GB
-VRAM). Best for sensitive data, fine-tuning, and cost-effective batch work.
+**Local (open-weight, can run on Sagehen):** gpt-oss (OpenAI), Qwen (Alibaba),
+Mistral, Phi (Microsoft), Gemma (Google), Llama (Meta). Useful sizes run from
+about 4B to over 100B parameters. Best for sensitive data, fine-tuning, and
+cost-effective batch work.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## "Open-Weight" Is Not the Same as "Open-Source"
+
+You can download and run these models, but the licences differ sharply. Some
+are Apache 2.0 or MIT; others carry custom terms with use restrictions, and
+some require you to request access before downloading. Training data is almost
+never released, so none are open-source in the sense a software licence means it.
+
+Check the licence before you build a published result on a model — see
+Episode 10.
+
+::::::::::::::::::::::::::::::::::::::::::::::
 
 ### Computer Vision and Scientific ML
 
@@ -68,14 +83,42 @@ models, climate downscaling, satellite imagery analysis.
 
 ### Model Size and Requirements
 
-| Model | Size | VRAM | Speed |
-|-------|------|------|-------|
-| Phi 2.7B | 3GB | 8GB | Very Fast |
-| Llama 7B (4-bit) | 4GB | 8GB | Fast |
-| Mistral 7B (4-bit) | 4GB | 8GB | Very Fast |
-| Llama 13B (4-bit) | 8GB | 16GB | Medium |
-| Llama 70B (4-bit) | 38GB | 48GB+ | Slower |
-| Stable Diffusion XL | 7GB | 24GB | Slower |
+Rather than memorise a model list that will be out of date within months, learn
+the arithmetic:
+
+```
+VRAM for weights ≈ parameters × bytes-per-parameter
+  16-bit → 2 bytes | 8-bit → 1 byte | 4-bit → 0.5 bytes
+Then add 20-40% for activations and the KV cache; much more for long contexts.
+```
+
+So a 7B model needs roughly 14 GB at 16-bit, or 3.5 GB at 4-bit, plus headroom.
+
+Worked examples, **accurate as of August 2026** — check current sizes on
+Hugging Face before planning a job:
+
+| Model | Precision | Weights | Sensible GPU |
+|-------|-----------|---------|--------------|
+| Phi-4-mini (3.8B) | 4-bit | ~2 GB | Any |
+| Qwen3 8B | 4-bit | ~4 GB | L40S |
+| gpt-oss-20b | native | ~16 GB | L40S |
+| Qwen3 32B | 4-bit | ~16 GB | L40S |
+| gpt-oss-120b | native | ~60 GB | A100 |
+| Llama 4 Scout (109B total) | 4-bit | ~55 GB | A100 |
+| Stable Diffusion XL | 16-bit | ~7 GB | L40S |
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Mixture-of-Experts Models Still Need All the Weights
+
+Several current models are **mixture-of-experts**: Llama 4 Scout has 109B total
+parameters but activates only about 17B per token. That makes it *faster* than
+its size suggests, not *smaller*. All 109B must be resident in GPU memory.
+
+Size your GPU request from **total** parameters. Sizing from the active count
+is a common and expensive mistake.
+
+::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: callout
 
@@ -94,25 +137,28 @@ classification, the tool choice is largely determined.
 For each model below, identify which Sagehen GPU (L40S 48 GB, A100 80 GB,
 or RTX PRO 6000 96 GB) is the minimum required:
 
-1. Phi 2.7B (5GB VRAM)
-2. Llama 13B 4-bit quantized (8GB VRAM)
-3. Llama 70B 4-bit quantized (40GB VRAM)
+1. Phi-4-mini 3.8B at 4-bit (~5GB VRAM)
+2. Qwen3 32B at 4-bit (~20GB VRAM)
+3. gpt-oss-120b (~60GB VRAM)
 4. Stable Diffusion XL (24GB VRAM)
-5. Llama 70B 4-bit serving a 128K-token context (85GB VRAM)
+5. gpt-oss-120b serving a 128K-token context (~90GB VRAM)
 
 ::::::::::::::::::::::::::::::::::::: solution
 
 ## Solution
 
-1. **Phi 2.7B**: L40S (48GB) -- 5GB used, enormous headroom
-2. **Llama 13B 4-bit**: L40S (48GB) -- 8GB used, room for long contexts
-3. **Llama 70B 4-bit**: A100 (80GB) -- needs 40GB, exceeds L40S for comfort
+1. **Phi-4-mini**: L40S (48GB) -- 5GB used, enormous headroom
+2. **Qwen3 32B 4-bit**: L40S (48GB) -- 20GB used, room for long contexts
+3. **gpt-oss-120b**: A100 (80GB) -- needs 60GB, exceeds L40S
 4. **Stable Diffusion XL**: L40S (48GB) -- 24GB fits, with room for batching
-5. **Llama 70B, 128K context**: RTX PRO 6000 (96GB) -- the KV cache pushes
+5. **gpt-oss-120b, 128K context**: RTX PRO 6000 (96GB) -- the KV cache pushes
    total memory past the A100's 80GB
 
 The L40S is the least contended card, so small and mid-sized jobs should
 start there. Scale up only when the memory figure genuinely requires it.
+
+Notice that items 3 and 5 are the *same model*: context length alone moved the
+job up a GPU tier. Estimate your context budget before you request a card.
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 

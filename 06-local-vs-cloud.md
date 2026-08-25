@@ -19,13 +19,15 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 
-## Cloud AI (ChatGPT, Claude, Bard)
+## Cloud AI (ChatGPT, Claude, Gemini)
 
-**Pros:** State-of-the-art models, no setup required, instant responses,
+**Pros:** the strongest available models, no setup required, instant responses,
 continuous improvement, works from anywhere.
 
-**Cons:** Data sent to external servers, no control over data retention,
-cannot use RESTRICTED data, subscription costs, API rate limits.
+**Cons:** data sent to external servers, no control over data retention,
+cannot use RESTRICTED data, subscription costs, API rate limits, and **the
+model can change or be withdrawn underneath you** — which breaks
+reproducibility.
 
 **Best for:** PUBLIC data, quick answers, rapid prototyping.
 
@@ -34,8 +36,8 @@ cannot use RESTRICTED data, subscription costs, API rate limits.
 **Pros:** Data stays on Pomona infrastructure, can use RESTRICTED and
 PROPRIETARY data, no subscription cost, full control, reproducible results.
 
-**Cons:** Smaller models (lower quality than GPT-4), setup required, slower
-responses (GPU-dependent), GPU queue wait times.
+**Cons:** generally smaller models than the leading hosted ones, setup
+required, slower responses (GPU-dependent), GPU queue wait times.
 
 **Best for:** RESTRICTED data, sensitive research, reproducible pipelines,
 batch processing.
@@ -46,7 +48,7 @@ batch processing.
 Use Cloud AI (ChatGPT/Claude) when:
   Data is PUBLIC
   Speed is critical
-  You need the latest state-of-the-art
+  You need the strongest available model
   One-off questions
 
 Use Local AI (Sagehen) when:

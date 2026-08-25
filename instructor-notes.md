@@ -1,5 +1,37 @@
 # Instructor Notes: Responsible Use of AI Tools on HPC
 
+::::::::::::::::::::::::::::::::::::: callout
+
+## Maintenance: This Lesson Has a Shelf Life
+
+More than any other workshop in the series, this one goes stale. Product names
+change (Bard became Gemini in February 2024), models are withdrawn (GPT-5.1 was
+removed from ChatGPT in March 2026), and prices move constantly.
+
+The lesson is deliberately built so that **only a small, marked surface needs
+maintenance**. Everything else is framed around data classification, which does
+not change. Before each delivery, check these and nothing else:
+
+| Location | What to check | Last verified |
+|---|---|---|
+| `episodes/01-ai-landscape.md` | Model size table, marked "as of August 2026" | 2026-08-25 |
+| `episodes/02-types-of-models.md` | Open-weight model list and licences | 2026-08-25 |
+| `learners/reference.md` | Cloud tool table; local model table | 2026-08-25 |
+| `episodes/03-pomona-ai-policy.md` | Link to Data Governance page still resolves | 2026-08-25 |
+
+Deliberate choices worth preserving if you edit:
+
+- **No quality rankings or leaderboard claims.** They rot within weeks and are
+  contested. The lesson ranks nothing.
+- **No prices.** Tiers and figures change; the lesson says only that free and
+  paid tiers exist.
+- **Ungated, permissively licensed models in all examples** (`gpt-oss-20b`), so
+  no learner is blocked waiting on a Hugging Face access request mid-workshop.
+- **The teaching point is never the model.** If you swap in a newer model, the
+  exercises should still work unchanged.
+
+::::::::::::::::::::::::::::::::::::::::::::::
+
 ## Workshop Overview
 
 **Duration**: 1 day (3-4 hours contact time)
@@ -125,7 +157,7 @@ Present 5 scenarios, have learners vote on classification:
 **Important Nuance**:
 - Anonymization is tricky (difficult to truly anonymize)
 - Recommend: "If you have to anonymize, probably shouldn't share"
-- Better: Use local Llama on Sagehen
+- Better: Use a local model on Sagehen
 
 **Closing**:
 "The principle is: When in doubt, assume stricter interpretation."
@@ -136,13 +168,13 @@ Present 5 scenarios, have learners vote on classification:
 **Goal**: Show practical path for handling sensitive data safely
 
 **Two Options**:
-1. **Hands-On**: Actually run Llama on Sagehen (requires Sagehen access)
+1. **Hands-On**: Actually run a local model on Sagehen (requires Sagehen access)
 2. **Demonstration**: Show pre-recorded demo (safer if no WiFi/access)
 
 **If Hands-On** (assumes SSH access available):
 ```bash
 module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
-# Create environment, load Llama, run query
+# Create environment, load gpt-oss-20b, run query
 # Time: 10-15 minutes for first load, 5 seconds for subsequent queries
 ```
 
@@ -158,14 +190,14 @@ module load miniconda3   # PyTorch comes from conda: conda activate pytorch_env
 - Comparing to ChatGPT (much slower but private)
 
 **Discussion**:
-- "Would you use local Llama for sensitive data?" (Yes, despite slowness)
+- "Would you use a local model for sensitive data?" (Yes, despite slowness)
 - "What if you need real-time speed?" (Use ChatGPT for PUBLIC data only)
 - "Can you combine both?" (Yes: local for sensitive, cloud for public)
 
 **Practical Workflow to Show**:
 1. Get research data
 2. Classify it
-3. If RESTRICTED: Use local Llama on Sagehen
+3. If RESTRICTED: Use a local model on Sagehen
 4. If PUBLIC: OK to use ChatGPT
 5. Always verify outputs
 
@@ -218,7 +250,7 @@ of work ethic account for 80% of poverty."
 
 Example 2:
 ```
-AI: "According to the latest research in 2024, quantum computers have
+AI: "According to the latest research in 2025, quantum computers have
 achieved general artificial intelligence."
 (This is false - no such breakthrough exists)
 ```
@@ -287,7 +319,7 @@ Data: Student essays with names and student IDs
 Classification: RESTRICTED (FERPA)
 
 Regulations: FERPA applies
-Approved Tools: Local Llama on Sagehen ONLY
+Approved Tools: Local models on Sagehen ONLY
 Verification Plan: Manual checking of outputs
 Disclosure: Methods section note about AI usage
 
@@ -316,7 +348,7 @@ Present 3 scenarios, discuss what went right/wrong:
 **Case 1: Good Practice**
 - Researcher had student data
 - Classified as RESTRICTED
-- Used local Llama on Sagehen
+- Used a local model on Sagehen
 - Documented decision
 - → COMPLIANT ✓
 
@@ -432,7 +464,7 @@ Learners will have very different AI experience:
 ## Common Learner Questions and Answers
 
 **Q: "Can I use ChatGPT to analyze student feedback?"**
-A: Only if you remove all identifiers. Better: Use local Llama on Sagehen.
+A: Only if you remove all identifiers. Better: Use a local model on Sagehen.
 
 **Q: "What counts as identifying?"**
 A: Names, student IDs, course numbers, dates, assignment names. If you can trace back to an individual, it's identifiable.
@@ -452,7 +484,7 @@ A: Only if partner agrees. Check your NDA!
 **Q: "How do I know if research is export-controlled?"**
 A: Government websites, funding agency, or ask Provost's office.
 
-**Q: "Is local Llama actually secure?"**
+**Q: "Is a local model actually secure?"**
 A: Yes, it's on US infrastructure and doesn't send data anywhere.
 
 ---
@@ -462,7 +494,7 @@ A: Yes, it's on US infrastructure and doesn't send data anywhere.
 ### For Learners
 - Pomona's full AI policy (provide link)
 - FERPA for researchers (explain sheet)
-- Local Llama setup guide
+- Local model setup guide
 - Case studies and examples
 - ITS contact information
 
@@ -479,7 +511,7 @@ A: Yes, it's on US infrastructure and doesn't send data anywhere.
 ### Immediate
 - Distribute slides and reference materials
 - Provide ITS contact info
-- Share local Llama setup guide
+- Share local model setup guide
 
 ### Follow-Up (1 week)
 - Send summary email with key takeaways
@@ -501,7 +533,7 @@ A: Yes, it's on US infrastructure and doesn't send data anywhere.
 - Real-world case studies helped people understand consequences
 - Interactive scenarios made policy concrete
 - Decision tree demystified complex policy
-- Showing local Llama demo increased confidence
+- Showing the local model demo increased confidence
 
 ### What to Improve
 - FERPA details still unclear for some; consider more examples

@@ -34,9 +34,9 @@ per violation.
 
 **Classroom implications:**
 
-- Do NOT upload student work, grades, or feedback to ChatGPT
-- Do NOT ask ChatGPT "What's wrong with this student's paper?"
-- DO use local Llama on Sagehen, or anonymize completely
+- Do NOT upload student work, grades, or feedback to any external AI service
+- Do NOT ask an external AI "What's wrong with this student's paper?"
+- DO use a local model on Sagehen, or anonymize completely
 - DO ask "What's the grammatical issue in this sentence?" (without student context)
 
 ## HIPAA (Healthcare Data)
@@ -123,7 +123,7 @@ For a research project (real or hypothetical), write a brief policy:
 
 - **Data:** PRIMARY: PUBLIC (published papers from arXiv). METADATA:
   PROPRIETARY (our unpublished analysis).
-- **Tools:** ChatGPT for summarizing papers (PUBLIC data). Local Llama on
+- **Tools:** ChatGPT for summarizing papers (PUBLIC data). A local model on
   Sagehen for preliminary results (PROPRIETARY data).
 - **Documentation:** All interactions logged in experiment log; outputs
   verified before publication.
