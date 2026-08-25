@@ -249,7 +249,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-ollama-local-llms.html">8. Ollama and Local LLMs</a>
+        <a href="08-ollama-local-llms.html">8. Running Local LLMs on Sagehen</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -326,7 +326,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1></h1>
-        <p>Last updated on 2026-08-24 |
+        <p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/learners/reference.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -345,7 +345,7 @@
 <h3 id="public-data">PUBLIC Data<a class="anchor" aria-label="anchor" href="#public-data"></a></h3>
 <p><strong>Definition</strong>: Information that is already public or
 could be made public without harm</p>
-<p><strong>Can Use</strong>: ChatGPT, Claude, Bard, or any external AI
+<p><strong>Can Use</strong>: ChatGPT, Claude, Gemini, or any external AI
 tool</p>
 <p><strong>Examples</strong>: - Published research papers - Public
 datasets - General knowledge questions - Non-sensitive coursework</p>
@@ -396,7 +396,7 @@ personal $1000+ per violation</li>
 <strong>AI Rule</strong>: NEVER use external AI with student
 data</li>
 <li>
-<strong>Safe Method</strong>: Local Llama on Sagehen, or fully
+<strong>Safe Method</strong>: A local model on Sagehen, or fully
 anonymize (no names)</li>
 </ul></div>
 <div class="section level3">
@@ -441,7 +441,7 @@ infrastructure only)</li>
    NO → Classify first (see Data Classification section)
 
 2. Is my data PUBLIC?
-   YES → ChatGPT, Claude, Bard, or other external AI is FINE
+   YES → ChatGPT, Claude, Gemini, or other external AI is FINE
    NO → Continue to 3
 
 3. Is my data RESTRICTED (FERPA, HIPAA, export-controlled, PII)?
@@ -455,103 +455,166 @@ infrastructure only)</li>
 RESULT: Chose appropriate AI tool</code></pre>
 <hr></div>
 <div class="section level2">
-<h2 id="cloud-ai-tools-comparison">Cloud AI Tools Comparison<a class="anchor" aria-label="anchor" href="#cloud-ai-tools-comparison"></a></h2>
+<h2 id="cloud-ai-tools">Cloud AI Tools<a class="anchor" aria-label="anchor" href="#cloud-ai-tools"></a></h2>
+<p>The table below deliberately does <strong>not</strong> rank these on
+quality. Rankings change with every release, and quality is not what
+decides whether you are allowed to use a tool. What matters is where the
+data goes and under what contract.</p>
+<table class="table"><thead><tr><th>Tool</th>
+<th>Vendor</th>
+<th>Web address</th>
+<th>Data goes to</th>
+</tr></thead><tbody><tr><td>ChatGPT</td>
+<td>OpenAI</td>
+<td><a href="https://chatgpt.com" class="external-link uri">https://chatgpt.com</a></td>
+<td>OpenAI</td>
+</tr><tr><td>Claude</td>
+<td>Anthropic</td>
+<td><a href="https://claude.ai" class="external-link uri">https://claude.ai</a></td>
+<td>Anthropic</td>
+</tr><tr><td>Gemini</td>
+<td>Google</td>
+<td><a href="https://gemini.google.com" class="external-link uri">https://gemini.google.com</a></td>
+<td>Google</td>
+</tr><tr><td>Copilot</td>
+<td>Microsoft</td>
+<td><a href="https://copilot.microsoft.com" class="external-link uri">https://copilot.microsoft.com</a></td>
+<td>Microsoft</td>
+</tr></tbody></table><p>All four offer a no-cost tier and one or more paid tiers. Prices and
+tier names change often enough that this reference does not quote
+them.</p>
 <div class="section level3">
-<h3 id="chatgpt-openai">ChatGPT (OpenAI)<a class="anchor" aria-label="anchor" href="#chatgpt-openai"></a></h3>
-<ul><li>
-<strong>Cost</strong>: Free (limited), Paid ($20/month)</li>
-<li>
-<strong>Quality</strong>: Very good (GPT-4 is top-tier)</li>
-<li>
-<strong>Speed</strong>: Fast</li>
-<li>
-<strong>Privacy</strong>: Data sent to OpenAI servers</li>
-<li>
-<strong>Best for</strong>: General questions, code help,
-drafting</li>
-</ul></div>
-<div class="section level3">
-<h3 id="claude-anthropic">Claude (Anthropic)<a class="anchor" aria-label="anchor" href="#claude-anthropic"></a></h3>
-<ul><li>
-<strong>Cost</strong>: Free (limited), Claude Pro ($20/month)</li>
-<li>
-<strong>Quality</strong>: Excellent (comparable to GPT-4)</li>
-<li>
-<strong>Speed</strong>: Medium</li>
-<li>
-<strong>Privacy</strong>: Data sent to Anthropic servers</li>
-<li>
-<strong>Best for</strong>: Long documents, reasoning, detailed
-explanations</li>
-</ul></div>
-<div class="section level3">
-<h3 id="bard-google">Bard (Google)<a class="anchor" aria-label="anchor" href="#bard-google"></a></h3>
-<ul><li>
-<strong>Cost</strong>: Free</li>
-<li>
-<strong>Quality</strong>: Good (improving)</li>
-<li>
-<strong>Speed</strong>: Fast</li>
-<li>
-<strong>Privacy</strong>: Data sent to Google</li>
-<li>
-<strong>Best for</strong>: Real-time information, Google services
-integration</li>
-</ul></div>
-<div class="section level3">
-<h3 id="copilot-microsoft">Copilot (Microsoft)<a class="anchor" aria-label="anchor" href="#copilot-microsoft"></a></h3>
-<ul><li>
-<strong>Cost</strong>: Free</li>
-<li>
-<strong>Quality</strong>: Good (uses GPT-4)</li>
-<li>
-<strong>Speed</strong>: Fast</li>
-<li>
-<strong>Privacy</strong>: Data sent to Microsoft</li>
-<li>
-<strong>Best for</strong>: Code generation, Office integration</li>
-</ul><hr></div>
+<h3 id="the-distinction-that-actually-matters">The distinction that actually matters<a class="anchor" aria-label="anchor" href="#the-distinction-that-actually-matters"></a></h3>
+<p><strong>Personal account</strong> — you signed up yourself with an
+email address. Your input is governed by consumer terms, which may
+permit the vendor to retain it and use it to improve their models. Treat
+anything you type as though it may be read by someone else.
+<strong>PUBLIC data only.</strong></p>
+<p><strong>Institutionally contracted account</strong> — Pomona has a
+signed agreement with the vendor covering data handling, retention and
+training. The terms, and therefore what you are permitted to put in,
+depend entirely on what that specific contract says.</p>
+<p>Do not assume Pomona holds such a contract for a given tool, and do
+not assume one contract’s terms apply to another tool. Check the current
+guidance in <a href="https://www.pomona.edu/data-governance" class="external-link">Use of AI
+Tools with Pomona College Data</a> or ask <a href="mailto:its-hpc@pomona.edu" class="email">its-hpc@pomona.edu</a>
+before putting anything that is not PUBLIC into any cloud AI
+service.</p>
+<div id="names-change-the-rules-do-not" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="names-change-the-rules-do-not" class="callout-inner">
+<h3 class="callout-title">Names Change; the Rules Do Not</h3>
+<div class="callout-content">
+<p>Google’s assistant was <strong>Bard</strong> until February 2024 and
+is now <strong>Gemini</strong>. Model generations turn over every few
+months. If a tool you are using is not listed above, that does not make
+it approved or unapproved — apply the same question: <em>where does this
+data go, and under whose terms?</em></p>
+</div>
+</div>
+</div>
+<hr></div>
 </div>
 <div class="section level2">
 <h2 id="local-ai-models-on-sagehen">Local AI Models on Sagehen<a class="anchor" aria-label="anchor" href="#local-ai-models-on-sagehen"></a></h2>
 <div class="section level3">
-<h3 id="llama-2-meta">Llama 2 (Meta)<a class="anchor" aria-label="anchor" href="#llama-2-meta"></a></h3>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="co"># Model sizes available</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1" aria-label="code-block-2-2"></a><span class="ex">7B:</span>   Fast, okay quality, fits comfortably on an L40S <span class="er">(</span><span class="ex">48GB</span><span class="kw">)</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1" aria-label="code-block-2-3"></a><span class="ex">13B:</span>  Better quality, needs 32GB GPU <span class="er">(</span><span class="ex">L40S</span><span class="kw">)</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1" aria-label="code-block-2-4"></a><span class="ex">70B:</span>  Best quality, needs 2x A100 <span class="er">(</span><span class="ex">80GB</span> each<span class="kw">)</span></span></code></pre>
+<h3 id="sizing-rule-this-outlasts-any-model-list">Sizing rule (this outlasts any model list)<a class="anchor" aria-label="anchor" href="#sizing-rule-this-outlasts-any-model-list"></a></h3>
+<p>Estimate VRAM from parameter count and precision:</p>
+<pre><code>VRAM for weights ≈ parameters × bytes-per-parameter
+
+  16-bit (fp16/bf16) → 2 bytes    7B  ≈ 14 GB
+   8-bit             → 1 byte     7B  ≈  7 GB
+   4-bit             → 0.5 bytes  7B  ≈  3.5 GB
+
+Then add headroom for activations and the KV cache — budget 20-40% on top
+for short prompts, and considerably more for long contexts.</code></pre>
+<p>For a mixture-of-experts (MoE) model, memory is set by
+<strong>total</strong> parameters, not the smaller “active” count. A
+109B-total model with 17B active still needs the full 109B in
+memory.</p>
 </div>
+<div class="section level3">
+<h3 id="concrete-options-as-of-august-2026">Concrete options as of August 2026<a class="anchor" aria-label="anchor" href="#concrete-options-as-of-august-2026"></a></h3>
+<p>Verify sizes and licences on Hugging Face before relying on them.</p>
+<table class="table"><colgroup><col width="25%"><col width="25%"><col width="28%"><col width="21%"></colgroup><thead><tr><th>Family</th>
+<th>Vendor</th>
+<th>Licence</th>
+<th>Notes</th>
+</tr></thead><tbody><tr><td><code>gpt-oss-20b</code></td>
+<td>OpenAI</td>
+<td>Apache 2.0</td>
+<td>Runs in ~16 GB; ungated download</td>
+</tr><tr><td><code>gpt-oss-120b</code></td>
+<td>OpenAI</td>
+<td>Apache 2.0</td>
+<td>Fits a single 80 GB A100</td>
+</tr><tr><td>Qwen3</td>
+<td>Alibaba</td>
+<td>Apache 2.0</td>
+<td>Wide size range, strong multilingual</td>
+</tr><tr><td>Mistral Small</td>
+<td>Mistral AI</td>
+<td>Apache 2.0</td>
+<td>Efficient general-purpose</td>
+</tr><tr><td>Phi-4-mini</td>
+<td>Microsoft</td>
+<td>MIT</td>
+<td>~3.8B; smallest useful option</td>
+</tr><tr><td>Gemma 3</td>
+<td>Google</td>
+<td>Gemma terms</td>
+<td>Multimodal; licence is <em>not</em> OSI-approved</td>
+</tr><tr><td>Llama 4</td>
+<td>Meta</td>
+<td>Llama Community</td>
+<td>MoE; gated — requires accepting terms</td>
+</tr></tbody></table><p><strong>Prefer an Apache 2.0 or MIT model</strong> unless you need
+something specific from a gated one. They download without an access
+request, which removes a step that otherwise blocks workshop exercises,
+and their terms are far simpler to satisfy when you publish.</p>
 </div>
 <div class="section level3">
 <h3 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a></h3>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="ex">module</span> load miniconda3   <span class="co"># PyTorch comes from conda: conda activate pytorch_env</span></span>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="ex">module</span> load miniconda3   <span class="co"># frameworks come from conda, not a module</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1" aria-label="code-block-3-2"></a><span class="ex">conda</span> activate ml_env</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1" aria-label="code-block-3-3"></a></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1" aria-label="code-block-3-4"></a><span class="ex">python3</span> <span class="op">&lt;&lt; 'EOF'</span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1" aria-label="code-block-3-5"></a><span class="st">import torch</span></span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1" aria-label="code-block-3-6"></a><span class="st">from transformers import AutoTokenizer, AutoModelForCausalLM</span></span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1" aria-label="code-block-3-7"></a></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1" aria-label="code-block-3-8"></a><span class="st">model_name = "meta-llama/Llama-2-7b-chat-hf"</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1" aria-label="code-block-3-9"></a><span class="st">tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token=True)</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1" aria-label="code-block-3-10"></a><span class="st">model = AutoModelForCausalLM.from_pretrained(</span></span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1" aria-label="code-block-3-11"></a><span class="st">    model_name,</span></span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1" aria-label="code-block-3-12"></a><span class="st">    torch_dtype=torch.float16,</span></span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1" aria-label="code-block-3-13"></a><span class="st">    device_map="auto",</span></span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1" aria-label="code-block-3-14"></a><span class="st">    use_auth_token=True</span></span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1" aria-label="code-block-3-15"></a><span class="st">)</span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1" aria-label="code-block-3-16"></a></span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1" aria-label="code-block-3-17"></a><span class="st"># Use it</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1" aria-label="code-block-3-8"></a><span class="st"># Apache 2.0 and ungated -- no access request needed.</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1" aria-label="code-block-3-9"></a><span class="st">model_name = "openai/gpt-oss-20b"</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1" aria-label="code-block-3-10"></a></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1" aria-label="code-block-3-11"></a><span class="st">tokenizer = AutoTokenizer.from_pretrained(model_name)</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1" aria-label="code-block-3-12"></a><span class="st">model = AutoModelForCausalLM.from_pretrained(</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1" aria-label="code-block-3-13"></a><span class="st">    model_name,</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1" aria-label="code-block-3-14"></a><span class="st">    dtype=torch.bfloat16,</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1" aria-label="code-block-3-15"></a><span class="st">    device_map="auto",</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1" aria-label="code-block-3-16"></a><span class="st">)</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1" aria-label="code-block-3-17"></a></span>
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1" aria-label="code-block-3-18"></a><span class="st">inputs = tokenizer("What is machine learning?", return_tensors="pt").to(model.device)</span></span>
 <span id="cb3-19"><a href="#cb3-19" tabindex="-1" aria-label="code-block-3-19"></a><span class="st">outputs = model.generate(**inputs, max_new_tokens=100)</span></span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1" aria-label="code-block-3-20"></a><span class="st">print(tokenizer.decode(outputs[0]))</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1" aria-label="code-block-3-20"></a><span class="st">print(tokenizer.decode(outputs[0], skip_special_tokens=True))</span></span>
 <span id="cb3-21"><a href="#cb3-21" tabindex="-1" aria-label="code-block-3-21"></a><span class="op">EOF</span></span></code></pre>
 </div>
+<p>For a <strong>gated</strong> model (Llama, and some others) you must
+first accept the licence on its Hugging Face page, create a token, and
+authenticate:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="ex">huggingface-cli</span> login          <span class="co"># paste your token when prompted</span></span></code></pre>
+</div>
+<p>Then pass <code>token=True</code> to both
+<code>from_pretrained</code> calls. The older
+<code>use_auth_token=</code> argument still appears in tutorials online
+but has been replaced by <code>token=</code>.</p>
 <hr></div>
 </div>
 <div class="section level2">
@@ -560,26 +623,55 @@ integration</li>
 <h3 id="for-publications">For Publications<a class="anchor" aria-label="anchor" href="#for-publications"></a></h3>
 <pre><code>Data Analysis
 
-We used ChatGPT-4 (OpenAI) to generate initial hypotheses for data interpretation,
-based on preliminary analysis results. All reported numerical results were
-independently verified through formal statistical analysis. ChatGPT was not used
-in any statistical inference; its role was limited to hypothesis generation and
-preliminary interpretation of already-verified findings.
+We used ChatGPT (OpenAI, GPT-5.4 Thinking, accessed 2026-07-09) to generate
+initial hypotheses for data interpretation, based on preliminary analysis
+results. All reported numerical results were independently verified through
+formal statistical analysis. The model was not used in any statistical
+inference; its role was limited to hypothesis generation and preliminary
+interpretation of already-verified findings.
 
 Model Citation:
-OpenAI. (2024). ChatGPT-4 language model. https://openai.com</code></pre>
+OpenAI. (2026). ChatGPT (GPT-5.4 Thinking) [Large language model].
+  https://chatgpt.com</code></pre>
+<div id="name-the-model-and-the-date" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="name-the-model-and-the-date" class="callout-inner">
+<h3 class="callout-title">Name the Model <em>and</em> the Date</h3>
+<div class="callout-content">
+<p>“ChatGPT” is the product; the model behind it is swapped out
+regularly and older versions are withdrawn. GPT-5.1 was removed from
+ChatGPT in March 2026 and GPT-5.2 in June 2026 — a paper citing only
+“ChatGPT” gives a reader no way to know which of those produced the
+output, and no way to run it again.</p>
+<p>Record <strong>product, model version and access date</strong>. That
+is the most a reader can use for a hosted model.</p>
+<p>A locally run model is much stronger evidence, because you can pin an
+exact revision that will still be there later. Cite the repository and
+commit:</p>
+<pre><code>Model Citation:
+OpenAI. (2025). gpt-oss-20b [Large language model].
+  https://huggingface.co/openai/gpt-oss-20b (revision a1b2c3d)</code></pre>
+<p>This is a real advantage of running models on Sagehen, not merely a
+compliance convenience: <strong>your analysis stays reproducible after
+the vendor moves on.</strong></p>
+</div>
+</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="for-code">For Code<a class="anchor" aria-label="anchor" href="#for-code"></a></h3>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="co"># AI-assisted interpretation: ChatGPT was used to suggest potential</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1" aria-label="code-block-5-2"></a><span class="co"># optimizations for this sorting algorithm. The original implementation is</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1" aria-label="code-block-5-3"></a><span class="co"># from [source], and ChatGPT suggestions were validated against test suite.</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1" aria-label="code-block-5-4"></a><span class="kw">def</span> optimized_sort(data):</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1" aria-label="code-block-5-5"></a>    <span class="co"># ... code ...</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1" aria-label="code-block-5-6"></a>    <span class="cf">pass</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="co"># AI-assisted interpretation: ChatGPT was used to suggest potential</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1" aria-label="code-block-7-2"></a><span class="co"># optimizations for this sorting algorithm. The original implementation is</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1" aria-label="code-block-7-3"></a><span class="co"># from [source], and ChatGPT suggestions were validated against test suite.</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1" aria-label="code-block-7-4"></a><span class="kw">def</span> optimized_sort(data):</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1" aria-label="code-block-7-5"></a>    <span class="co"># ... code ...</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1" aria-label="code-block-7-6"></a>    <span class="cf">pass</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -622,7 +714,7 @@ ChatGPT to analyze themes?”</p>
 <p><strong>Answer</strong>: ONLY if: - You remove all identifying
 information (names, student IDs) - Verify anonymization (test removing
 one line at a time) - You have participant consent for AI analysis</p>
-<p><strong>Better Answer</strong>: Use local Llama on Sagehen</p>
+<p><strong>Better Answer</strong>: Use a local model on Sagehen</p>
 <hr></div>
 <div class="section level3">
 <h3 id="scenario-3-draft-writing">Scenario 3: Draft Writing<a class="anchor" aria-label="anchor" href="#scenario-3-draft-writing"></a></h3>
@@ -679,13 +771,27 @@ Classification and Handling</a>
 </ul></div>
 <div class="section level3">
 <h3 id="tool-documentation">Tool Documentation<a class="anchor" aria-label="anchor" href="#tool-documentation"></a></h3>
-<ul><li>ChatGPT: <a href="https://openai.com" class="external-link uri">https://openai.com</a>
+<ul><li>ChatGPT: <a href="https://openai.com/chatgpt" class="external-link uri">https://openai.com/chatgpt</a>
 </li>
-<li>Claude: <a href="https://anthropic.com" class="external-link uri">https://anthropic.com</a>
+<li>Claude: <a href="https://claude.ai" class="external-link uri">https://claude.ai</a>
 </li>
-<li>Llama: <a href="https://ai.meta.com/llama/" class="external-link uri">https://ai.meta.com/llama/</a>
+<li>Gemini: <a href="https://gemini.google.com" class="external-link uri">https://gemini.google.com</a>
 </li>
-<li>HuggingFace: <a href="https://huggingface.co" class="external-link uri">https://huggingface.co</a>
+<li>gpt-oss (open weights): <a href="https://openai.com/open-models/" class="external-link uri">https://openai.com/open-models/</a>
+</li>
+<li>Hugging Face model hub: <a href="https://huggingface.co/models" class="external-link uri">https://huggingface.co/models</a>
+</li>
+<li>Transformers docs: <a href="https://huggingface.co/docs/transformers" class="external-link uri">https://huggingface.co/docs/transformers</a>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="pomona-resources">Pomona Resources<a class="anchor" aria-label="anchor" href="#pomona-resources"></a></h3>
+<ul><li>Data Governance, including <strong>Use of AI Tools with Pomona
+College Data</strong> and <strong>Data Classifications</strong>: <a href="https://www.pomona.edu/data-governance" class="external-link uri">https://www.pomona.edu/data-governance</a>
+</li>
+<li>ITS Policies and Guidelines: <a href="https://www.pomona.edu/administration/its/policies" class="external-link uri">https://www.pomona.edu/administration/its/policies</a>
+</li>
+<li>Research Computing / Sagehen: <a href="mailto:its-hpc@pomona.edu" class="email">its-hpc@pomona.edu</a>
 </li>
 </ul></div>
 <div class="section level3">
@@ -697,24 +803,28 @@ Classification and Handling</a>
 </div>
 <div class="section level2">
 <h2 id="useful-commands-sagehen">Useful Commands (Sagehen)<a class="anchor" aria-label="anchor" href="#useful-commands-sagehen"></a></h2>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="co"># SSH into Sagehen</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1" aria-label="code-block-7-2"></a><span class="fu">ssh</span> your_netid@sagehen.hpc.pomona.edu</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1" aria-label="code-block-7-3"></a></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1" aria-label="code-block-7-4"></a><span class="co"># Load PyTorch for local models</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1" aria-label="code-block-7-5"></a><span class="ex">module</span> load miniconda3   <span class="co"># PyTorch comes from conda: conda activate pytorch_env</span></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1" aria-label="code-block-7-6"></a></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1" aria-label="code-block-7-7"></a><span class="co"># Create encrypted folder for restricted data</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1" aria-label="code-block-7-8"></a><span class="ex">gocryptfs</span> <span class="at">--init</span> /bigdata/lab/<span class="op">&lt;</span>labname<span class="op">&gt;</span>/encrypted</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1" aria-label="code-block-7-9"></a><span class="ex">gocryptfs</span> /bigdata/lab/<span class="op">&lt;</span>labname<span class="op">&gt;</span>/encrypted /scratch/<span class="va">$USER</span>/decrypted</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1" aria-label="code-block-7-10"></a></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1" aria-label="code-block-7-11"></a><span class="co"># Run local Llama model</span></span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1" aria-label="code-block-7-12"></a><span class="ex">python3</span> local_llama_script.py</span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1" aria-label="code-block-7-13"></a></span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1" aria-label="code-block-7-14"></a><span class="co"># Check GPU availability</span></span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1" aria-label="code-block-7-15"></a><span class="ex">nvidia-smi</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a><span class="co"># SSH into Sagehen</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1" aria-label="code-block-9-2"></a><span class="fu">ssh</span> your_netid@sagehen.hpc.pomona.edu</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1" aria-label="code-block-9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1" aria-label="code-block-9-4"></a><span class="co"># Load conda; frameworks live in your conda env, not a module</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1" aria-label="code-block-9-5"></a><span class="ex">module</span> load miniconda3</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1" aria-label="code-block-9-6"></a><span class="ex">conda</span> activate ml_env</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1" aria-label="code-block-9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1" aria-label="code-block-9-8"></a><span class="co"># Create encrypted folder for restricted data</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1" aria-label="code-block-9-9"></a><span class="ex">gocryptfs</span> <span class="at">--init</span> /bigdata/lab/<span class="op">&lt;</span>labname<span class="op">&gt;</span>/encrypted</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1" aria-label="code-block-9-10"></a><span class="ex">gocryptfs</span> /bigdata/lab/<span class="op">&lt;</span>labname<span class="op">&gt;</span>/encrypted /scratch/<span class="va">$USER</span>/decrypted</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1" aria-label="code-block-9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1" aria-label="code-block-9-12"></a><span class="co"># Keep model weights off your /rhome quota</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1" aria-label="code-block-9-13"></a><span class="bu">export</span> <span class="va">HF_HOME</span><span class="op">=</span>/bigdata/lab/<span class="op">&lt;</span>labname<span class="op">&gt;</span>/huggingface_cache</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1" aria-label="code-block-9-14"></a></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1" aria-label="code-block-9-15"></a><span class="co"># Run a local model</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1" aria-label="code-block-9-16"></a><span class="ex">python3</span> local_llm_script.py</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1" aria-label="code-block-9-17"></a></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1" aria-label="code-block-9-18"></a><span class="co"># Check GPU availability</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1" aria-label="code-block-9-19"></a><span class="ex">nvidia-smi</span></span></code></pre>
 </div>
 <hr></div>
 <div class="section level2">
@@ -786,7 +896,7 @@ regulations</strong> - FERPA/HIPAA/export-control aren’t suggestions</p>
   "url": "https://pomona-college.github.io/hpc-ai-tools/reference.html",
   "identifier": "https://pomona-college.github.io/hpc-ai-tools/reference.html",
   "dateCreated": "2026-03-05",
-  "dateModified": "2026-08-24",
+  "dateModified": "2026-08-25",
   "datePublished": "2026-08-25"
 }
 

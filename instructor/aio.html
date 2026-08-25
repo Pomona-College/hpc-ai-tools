@@ -312,7 +312,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-ollama-local-llms.html">8. Ollama and Local LLMs</a>
+        <a href="08-ollama-local-llms.html">8. Running Local LLMs on Sagehen</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -402,7 +402,7 @@
         
 <section id="aio-01-ai-landscape"><p>Content from <a href="01-ai-landscape.html">The AI Landscape for Researchers</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/01-ai-landscape.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 15 minutes</p>
@@ -490,10 +490,29 @@ cloud GPU costs scale rapidly with intensive compute</li>
 <p><strong>Cloud-based (proprietary):</strong> ChatGPT (OpenAI), Claude
 (Anthropic), Gemini (Google). Per-token pricing; best for quick queries
 with non-sensitive data.</p>
-<p><strong>Local (open-source, can run on Sagehen):</strong> Llama 2/3
-(Meta), Mistral, Phi (Microsoft), Qwen. Sizes range from 7B to 70B
-parameters (15GB-350GB VRAM). Best for sensitive data, fine-tuning, and
-cost-effective batch work.</p>
+<p><strong>Local (open-weight, can run on Sagehen):</strong> gpt-oss
+(OpenAI), Qwen (Alibaba), Mistral, Phi (Microsoft), Gemma (Google),
+Llama (Meta). Useful sizes run from about 4B to over 100B parameters.
+Best for sensitive data, fine-tuning, and cost-effective batch work.</p>
+<div id="open-weight-is-not-the-same-as-open-source" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="open-weight-is-not-the-same-as-open-source" class="callout-inner">
+<h3 class="callout-title">“Open-Weight” Is Not the Same as
+“Open-Source”</h3>
+<div class="callout-content">
+<p>You can download and run these models, but the licences differ
+sharply. Some are Apache 2.0 or MIT; others carry custom terms with use
+restrictions, and some require you to request access before downloading.
+Training data is almost never released, so none are open-source in the
+sense a software licence means it.</p>
+<p>Check the licence before you build a published result on a model —
+see Episode 10.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="computer-vision-and-scientific-ml">Computer Vision and Scientific ML<a class="anchor" aria-label="anchor" href="#computer-vision-and-scientific-ml"></a>
@@ -508,52 +527,85 @@ imagery analysis.</p>
 <div class="section level3">
 <h3 id="model-size-and-requirements">Model Size and Requirements<a class="anchor" aria-label="anchor" href="#model-size-and-requirements"></a>
 </h3>
+<p>Rather than memorise a model list that will be out of date within
+months, learn the arithmetic:</p>
+<pre><code>VRAM for weights ≈ parameters × bytes-per-parameter
+  16-bit → 2 bytes | 8-bit → 1 byte | 4-bit → 0.5 bytes
+Then add 20-40% for activations and the KV cache; much more for long contexts.</code></pre>
+<p>So a 7B model needs roughly 14 GB at 16-bit, or 3.5 GB at 4-bit, plus
+headroom.</p>
+<p>Worked examples, <strong>accurate as of August 2026</strong> — check
+current sizes on Hugging Face before planning a job:</p>
 <table class="table">
 <thead><tr>
 <th>Model</th>
-<th>Size</th>
-<th>VRAM</th>
-<th>Speed</th>
+<th>Precision</th>
+<th>Weights</th>
+<th>Sensible GPU</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>Phi 2.7B</td>
-<td>3GB</td>
-<td>8GB</td>
-<td>Very Fast</td>
+<td>Phi-4-mini (3.8B)</td>
+<td>4-bit</td>
+<td>~2 GB</td>
+<td>Any</td>
 </tr>
 <tr>
-<td>Llama 7B (4-bit)</td>
-<td>4GB</td>
-<td>8GB</td>
-<td>Fast</td>
+<td>Qwen3 8B</td>
+<td>4-bit</td>
+<td>~4 GB</td>
+<td>L40S</td>
 </tr>
 <tr>
-<td>Mistral 7B (4-bit)</td>
-<td>4GB</td>
-<td>8GB</td>
-<td>Very Fast</td>
+<td>gpt-oss-20b</td>
+<td>native</td>
+<td>~16 GB</td>
+<td>L40S</td>
 </tr>
 <tr>
-<td>Llama 13B (4-bit)</td>
-<td>8GB</td>
-<td>16GB</td>
-<td>Medium</td>
+<td>Qwen3 32B</td>
+<td>4-bit</td>
+<td>~16 GB</td>
+<td>L40S</td>
 </tr>
 <tr>
-<td>Llama 70B (4-bit)</td>
-<td>38GB</td>
-<td>48GB+</td>
-<td>Slower</td>
+<td>gpt-oss-120b</td>
+<td>native</td>
+<td>~60 GB</td>
+<td>A100</td>
+</tr>
+<tr>
+<td>Llama 4 Scout (109B total)</td>
+<td>4-bit</td>
+<td>~55 GB</td>
+<td>A100</td>
 </tr>
 <tr>
 <td>Stable Diffusion XL</td>
-<td>7GB</td>
-<td>24GB</td>
-<td>Slower</td>
+<td>16-bit</td>
+<td>~7 GB</td>
+<td>L40S</td>
 </tr>
 </tbody>
 </table>
+<div id="mixture-of-experts-models-still-need-all-the-weights" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="mixture-of-experts-models-still-need-all-the-weights" class="callout-inner">
+<h3 class="callout-title">Mixture-of-Experts Models Still Need All the
+Weights</h3>
+<div class="callout-content">
+<p>Several current models are <strong>mixture-of-experts</strong>: Llama
+4 Scout has 109B total parameters but activates only about 17B per
+token. That makes it <em>faster</em> than its size suggests, not
+<em>smaller</em>. All 109B must be resident in GPU memory.</p>
+<p>Size your GPU request from <strong>total</strong> parameters. Sizing
+from the active count is a common and expensive mistake.</p>
+</div>
+</div>
+</div>
 <div id="the-ai-tool-decision-is-data-driven" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -580,11 +632,11 @@ determined.</p>
 <p>For each model below, identify which Sagehen GPU (L40S 48 GB, A100 80
 GB, or RTX PRO 6000 96 GB) is the minimum required:</p>
 <ol style="list-style-type: decimal">
-<li>Phi 2.7B (5GB VRAM)</li>
-<li>Llama 13B 4-bit quantized (8GB VRAM)</li>
-<li>Llama 70B 4-bit quantized (40GB VRAM)</li>
+<li>Phi-4-mini 3.8B at 4-bit (~5GB VRAM)</li>
+<li>Qwen3 32B at 4-bit (~20GB VRAM)</li>
+<li>gpt-oss-120b (~60GB VRAM)</li>
 <li>Stable Diffusion XL (24GB VRAM)</li>
-<li>Llama 70B 4-bit serving a 128K-token context (85GB VRAM)</li>
+<li>gpt-oss-120b serving a 128K-token context (~90GB VRAM)</li>
 </ol>
 </div>
 </div>
@@ -594,28 +646,31 @@ GB, or RTX PRO 6000 96 GB) is the minimum required:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal">
 <li>
-<strong>Phi 2.7B</strong>: L40S (48GB) – 5GB used, enormous
+<strong>Phi-4-mini</strong>: L40S (48GB) – 5GB used, enormous
 headroom</li>
 <li>
-<strong>Llama 13B 4-bit</strong>: L40S (48GB) – 8GB used, room for
+<strong>Qwen3 32B 4-bit</strong>: L40S (48GB) – 20GB used, room for
 long contexts</li>
 <li>
-<strong>Llama 70B 4-bit</strong>: A100 (80GB) – needs 40GB, exceeds
-L40S for comfort</li>
+<strong>gpt-oss-120b</strong>: A100 (80GB) – needs 60GB, exceeds
+L40S</li>
 <li>
 <strong>Stable Diffusion XL</strong>: L40S (48GB) – 24GB fits, with
 room for batching</li>
 <li>
-<strong>Llama 70B, 128K context</strong>: RTX PRO 6000 (96GB) – the
-KV cache pushes total memory past the A100’s 80GB</li>
+<strong>gpt-oss-120b, 128K context</strong>: RTX PRO 6000 (96GB) –
+the KV cache pushes total memory past the A100’s 80GB</li>
 </ol>
 <p>The L40S is the least contended card, so small and mid-sized jobs
 should start there. Scale up only when the memory figure genuinely
 requires it.</p>
+<p>Notice that items 3 and 5 are the <em>same model</em>: context length
+alone moved the job up a GPU tier. Estimate your context budget before
+you request a card.</p>
 </div>
 </div>
 </div>
@@ -644,7 +699,7 @@ selection</li>
 </div>
 </section></section><section id="aio-02-types-of-models"><p>Content from <a href="02-types-of-models.html">Types of AI Models</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/02-types-of-models.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 15 minutes</p>
@@ -687,27 +742,62 @@ alternatives</li>
 </h2>
 <hr class="half-width">
 <div class="section level3">
-<h3 id="open-source-models-for-sagehen">Open-Source Models for Sagehen<a class="anchor" aria-label="anchor" href="#open-source-models-for-sagehen"></a>
+<h3 id="open-weight-models-for-sagehen">Open-Weight Models for Sagehen<a class="anchor" aria-label="anchor" href="#open-weight-models-for-sagehen"></a>
 </h3>
-<p><strong>Llama 2/3 (Meta):</strong></p>
+<p>Specific models turn over quickly. Choose along three axes that do
+not: <strong>licence</strong>, <strong>size</strong>, and whether the
+download is <strong>gated</strong>.</p>
+<p><em>The examples below are current as of August 2026.</em></p>
+<p><strong>gpt-oss (OpenAI)</strong> — <code>gpt-oss-20b</code>,
+<code>gpt-oss-120b</code></p>
 <ul>
-<li>Sizes: 7B, 13B, 70B parameters</li>
-<li>7B fits easily on an L40S (48GB); 70B requires A100 (80GB)</li>
-<li>License: Llama Community License (free for research)</li>
-<li>Quality comparable to GPT-3.5 on many tasks</li>
+<li>Apache 2.0, ungated: <code>pip install</code> and go, no access
+request</li>
+<li>20b runs in about 16 GB; 120b fits a single A100 (80 GB)</li>
+<li>The path of least resistance for workshop work and for
+publication</li>
 </ul>
-<p><strong>Mistral 7B:</strong></p>
+<p><strong>Qwen3 (Alibaba)</strong></p>
 <ul>
-<li>Faster than Llama 2 7B with better instruction-following</li>
-<li>Fits on a single L40S</li>
-<li>Good balance of speed and quality</li>
+<li>Apache 2.0, ungated, unusually wide range of sizes</li>
+<li>Strong multilingual coverage — worth knowing if your corpus is not
+English</li>
 </ul>
-<p><strong>Phi-2 (Microsoft):</strong></p>
+<p><strong>Mistral Small (Mistral AI)</strong></p>
 <ul>
-<li>Only 2.7B parameters – runs on CPU if needed</li>
-<li>Surprisingly capable for its size</li>
-<li>Best for quick prototyping and low-resource scenarios</li>
+<li>Apache 2.0; efficient general-purpose model that fits a single
+L40S</li>
 </ul>
+<p><strong>Phi-4-mini (Microsoft)</strong></p>
+<ul>
+<li>MIT licence, about 3.8B parameters</li>
+<li>The smallest thing here that is still useful; good for prototyping a
+pipeline before committing GPU hours</li>
+</ul>
+<p><strong>Gemma 3 (Google)</strong> — multimodal, handles image input.
+Note the licence is Google’s own Gemma terms, <strong>not</strong> an
+OSI-approved open-source licence.</p>
+<p><strong>Llama 4 (Meta)</strong> — mixture-of-experts; Scout is 109B
+total / 17B active. Requires accepting the Llama Community Licence
+before download.</p>
+<div id="prefer-ungated-models-unless-you-need-otherwise" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="prefer-ungated-models-unless-you-need-otherwise" class="callout-inner">
+<h3 class="callout-title">Prefer Ungated Models Unless You Need
+Otherwise</h3>
+<div class="callout-content">
+<p>A gated model (Llama, among others) means: accept a licence on the
+model’s page, generate a token, then authenticate before downloading.
+That is fine for sustained project work, but it stalls a workshop and
+adds a licence term you must honour at publication.</p>
+<p>Unless a gated model gives you something you specifically need, start
+with an Apache 2.0 or MIT one.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="quantization-making-models-smaller">Quantization: Making Models Smaller<a class="anchor" aria-label="anchor" href="#quantization-making-models-smaller"></a>
@@ -795,9 +885,12 @@ preprocessing.</p>
 <div class="callout-content">
 <p>Begin with the smallest model that meets your quality needs:</p>
 <ol style="list-style-type: decimal">
-<li>Try Phi 2.7B or Mistral 7B first</li>
-<li>If quality is insufficient, scale to Llama 13B</li>
-<li>Use Llama 70B only when smaller models clearly underperform</li>
+<li>Try Phi-4-mini or an 8B-class model such as Qwen3 8B first</li>
+<li>If quality is insufficient, scale to a 20-30B model such as
+<code>gpt-oss-20b</code>
+</li>
+<li>Use a 100B-class model only when smaller ones clearly
+underperform</li>
 <li>Always use 4-bit quantization unless you need full precision</li>
 </ol>
 <p>This conserves GPU resources and reduces queue wait times on
@@ -834,21 +927,24 @@ data)</li>
 <div class="accordion-body">
 <ol style="list-style-type: decimal">
 <li>
-<strong>Summarizing papers (public data):</strong> Cloud AI
-(ChatGPT/Claude) is fine since papers are public. If you prefer local:
-Mistral 7B on an L40S.</li>
+<strong>Summarizing papers (public data):</strong> Cloud AI is fine
+since papers are public. If you prefer local: an 8B-class model on an
+L40S.</li>
 <li>
 <strong>Sentiment classification (proprietary):</strong> Local AI
-required. BERT (fine-tuned) or Mistral 7B on an L40S. Batch processing
-is efficient.</li>
+required. A fine-tuned encoder such as BERT, or an 8B-class instruct
+model, on an L40S. Batch processing is efficient.</li>
 <li>
 <strong>Object detection in microscopy:</strong> YOLO or ResNet on
 L40S depending on image resolution and batch size.</li>
 <li>
 <strong>Code generation (public data):</strong> Cloud AI is
-acceptable. Locally: Llama 13B or Mistral 7B give good code generation
-results.</li>
+acceptable. Locally, <code>gpt-oss-20b</code> on an L40S gives good code
+generation results.</li>
 </ol>
+<p>Note that only scenario 2’s answer was forced by the <em>data</em>.
+The others were choices about cost and convenience — which is the normal
+case.</p>
 </div>
 </div>
 </div>
@@ -861,8 +957,9 @@ results.</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>LLMs range from 2.7B (Phi) to 70B+ (Llama) parameters with varying
-quality</li>
+<li>Useful local LLMs range from about 4B to over 100B parameters</li>
+<li>Choose on licence, size and whether the download is gated – not on
+leaderboards</li>
 <li>Quantization (4-bit) reduces memory by 75% with minimal quality
 loss</li>
 <li>Vision models (YOLO, Stable Diffusion) and scientific ML have
@@ -876,7 +973,7 @@ scale up</li>
 <!-- Reference links for workshop episodes -->
 </section></section><section id="aio-03-pomona-ai-policy"><p>Content from <a href="03-pomona-ai-policy.html">Pomona's AI Use Policy</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/03-pomona-ai-policy.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 15 minutes</p>
@@ -916,10 +1013,34 @@ level</li>
 <section><h2 class="section-heading" id="pomonas-ai-tool-policy">Pomona’s AI Tool Policy<a class="anchor" aria-label="anchor" href="#pomonas-ai-tool-policy"></a>
 </h2>
 <hr class="half-width">
-<p><strong>Official Title:</strong> “Guideline - Use of AI Tools with
-Pomona College Data”</p>
-<p><strong>Core Principle:</strong> Data classification determines which
+<p><strong>Official title:</strong> “Use of AI Tools with Pomona College
+Data” — guidance on aligning AI usage with Pomona’s data governance
+structure and policies.</p>
+<p><strong>Where to find it:</strong> listed under Policies and
+Guidelines on the <a href="https://www.pomona.edu/data-governance" class="external-link">Data
+Governance page</a>. The document itself is in Box and requires campus
+login.</p>
+<p><strong>Core principle:</strong> data classification determines which
 tools you can use.</p>
+<div id="this-episode-summarises-the-guideline-governs" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="this-episode-summarises-the-guideline-governs" class="callout-inner">
+<h3 class="callout-title">This Episode Summarises; the Guideline
+Governs</h3>
+<div class="callout-content">
+<p>What follows is a working summary for teaching. The Data Governance
+page is authoritative and is revised as tools and contracts change.
+Where this lesson and the current guideline disagree, <strong>the
+guideline wins</strong> — and please tell <a href="mailto:its-hpc@pomona.edu" class="email">its-hpc@pomona.edu</a> so
+the lesson gets fixed.</p>
+<p>The same page also holds the <strong>Data Classifications</strong>
+document that defines the tiers used throughout this workshop.</p>
+</div>
+</div>
+</div>
 <div class="section level3">
 <h3 id="key-policy-principles">Key Policy Principles<a class="anchor" aria-label="anchor" href="#key-policy-principles"></a>
 </h3>
@@ -942,7 +1063,7 @@ HIPAA) override convenience – no exceptions for “just this once”</li>
 <h3 id="policy-quick-reference">Policy Quick Reference<a class="anchor" aria-label="anchor" href="#policy-quick-reference"></a>
 </h3>
 <pre><code>PUBLIC data
-  External AI: OK (ChatGPT, Claude, Bard, etc.)
+  External AI: OK (ChatGPT, Claude, Gemini, etc.)
   Local AI: OK (Sagehen)
 
 PROPRIETARY data
@@ -1046,7 +1167,7 @@ IT.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal">
 <li>
@@ -1087,7 +1208,7 @@ consequences</li>
 <!-- Reference links for workshop episodes -->
 </section></section><section id="aio-04-data-classification"><p>Content from <a href="04-data-classification.html">Data Classification for AI</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/04-data-classification.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 20 minutes</p>
@@ -1137,7 +1258,7 @@ harm.</p>
 (Kaggle, UCI ML Repository), conference presentations, general
 knowledge, anonymous aggregated statistics.</p>
 <p><strong>AI Tool Policy:</strong> May use external AI (ChatGPT,
-Claude, etc.)</p>
+Claude, Gemini, etc.)</p>
 </div>
 <div class="section level3">
 <h3 id="tier-2-proprietary">Tier 2: PROPRIETARY<a class="anchor" aria-label="anchor" href="#tier-2-proprietary"></a>
@@ -1197,7 +1318,7 @@ PI, IRB, or the privacy office.</p>
 </h2>
 <hr class="half-width">
 <p><strong>Student course evaluations:</strong> RESTRICTED (FERPA). Use
-local Llama on Sagehen.</p>
+a local model on Sagehen.</p>
 <p><strong>CSV with columns [ID, Age, Income, Disease_Status]:</strong>
 Could be RESTRICTED if ID is a real student ID. Remove the ID column to
 create a PUBLIC version.</p>
@@ -1291,7 +1412,7 @@ tool</li>
 <!-- Reference links for workshop episodes -->
 </section></section><section id="aio-05-sensitive-data"><p>Content from <a href="05-sensitive-data.html">Sensitive Data and AI</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/05-sensitive-data.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 20 minutes</p>
@@ -1341,9 +1462,11 @@ transcripts.</p>
 liability of $1000+ per violation.</p>
 <p><strong>Classroom implications:</strong></p>
 <ul>
-<li>Do NOT upload student work, grades, or feedback to ChatGPT</li>
-<li>Do NOT ask ChatGPT “What’s wrong with this student’s paper?”</li>
-<li>DO use local Llama on Sagehen, or anonymize completely</li>
+<li>Do NOT upload student work, grades, or feedback to any external AI
+service</li>
+<li>Do NOT ask an external AI “What’s wrong with this student’s
+paper?”</li>
+<li>DO use a local model on Sagehen, or anonymize completely</li>
 <li>DO ask “What’s the grammatical issue in this sentence?” (without
 student context)</li>
 </ul></section><section><h2 class="section-heading" id="hipaa-healthcare-data">HIPAA (Healthcare Data)<a class="anchor" aria-label="anchor" href="#hipaa-healthcare-data"></a>
@@ -1449,7 +1572,7 @@ science”:</strong></p>
 arXiv). METADATA: PROPRIETARY (our unpublished analysis).</li>
 <li>
 <strong>Tools:</strong> ChatGPT for summarizing papers (PUBLIC
-data). Local Llama on Sagehen for preliminary results (PROPRIETARY
+data). A local model on Sagehen for preliminary results (PROPRIETARY
 data).</li>
 <li>
 <strong>Documentation:</strong> All interactions logged in
@@ -1484,7 +1607,7 @@ Preliminary results stored on Sagehen until publication.</li>
 <!-- highlight <labname>/<myusername> placeholders in code blocks; remove if the varnish theme handles this natively -->
 <script>(function(){var CSS='.sh-placeholder{color:#c2410c;font-weight:700}[data-bs-theme="dark"] .sh-placeholder,html.dark .sh-placeholder{color:#fdba74}@media (prefers-color-scheme: dark){[data-bs-theme="auto"] .sh-placeholder{color:#fdba74}}';var RX=/<labname>|<myusername>/g;function firstMatch(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),nodes=[],full='';while(w.nextNode()){nodes.push({n:w.currentNode,s:full.length});full+=w.currentNode.nodeValue;}RX.lastIndex=0;var m;while((m=RX.exec(full))){var s=m.index,e=s+m[0].length,inSpan=false,parts=[];for(var j=0;j<nodes.length;j++){var ns=nodes[j].s,ne=ns+nodes[j].n.nodeValue.length;if(ne<=s||ns>=e)continue;parts.push({node:nodes[j].n,a:Math.max(s-ns,0),b:Math.min(e-ns,nodes[j].n.nodeValue.length)});var p=nodes[j].n.parentNode;while(p&&p!==el){if(p.classList&&p.classList.contains('sh-placeholder')){inSpan=true;break;}p=p.parentNode;}}if(!inSpan&&parts.length)return parts;}return null;}function wrapParts(parts){for(var i=parts.length-1;i>=0;i--){var t=parts[i].node,txt=t.nodeValue,a=parts[i].a,b=parts[i].b;var span=document.createElement('span');span.className='sh-placeholder';span.textContent=txt.slice(a,b);var f=document.createDocumentFragment();if(a>0)f.appendChild(document.createTextNode(txt.slice(0,a)));f.appendChild(span);if(b<txt.length)f.appendChild(document.createTextNode(txt.slice(b)));t.parentNode.replaceChild(f,t);}}function run(){var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);document.querySelectorAll('pre,code').forEach(function(el){var guard=0,parts;while((parts=firstMatch(el))&&guard++<500){wrapParts(parts);}});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}else{run();}})();</script><!-- Reference links for workshop episodes --></section></section><section id="aio-06-local-vs-cloud"><p>Content from <a href="06-local-vs-cloud.html">Local vs Cloud AI</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/06-local-vs-cloud.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 15 minutes</p>
@@ -1519,14 +1642,16 @@ Preliminary results stored on Sagehen until publication.</li>
 </div>
 </div>
 </div>
-<section><h2 class="section-heading" id="cloud-ai-chatgpt-claude-bard">Cloud AI (ChatGPT, Claude, Bard)<a class="anchor" aria-label="anchor" href="#cloud-ai-chatgpt-claude-bard"></a>
+<section><h2 class="section-heading" id="cloud-ai-chatgpt-claude-gemini">Cloud AI (ChatGPT, Claude, Gemini)<a class="anchor" aria-label="anchor" href="#cloud-ai-chatgpt-claude-gemini"></a>
 </h2>
 <hr class="half-width">
-<p><strong>Pros:</strong> State-of-the-art models, no setup required,
-instant responses, continuous improvement, works from anywhere.</p>
-<p><strong>Cons:</strong> Data sent to external servers, no control over
+<p><strong>Pros:</strong> the strongest available models, no setup
+required, instant responses, continuous improvement, works from
+anywhere.</p>
+<p><strong>Cons:</strong> data sent to external servers, no control over
 data retention, cannot use RESTRICTED data, subscription costs, API rate
-limits.</p>
+limits, and <strong>the model can change or be withdrawn underneath
+you</strong> — which breaks reproducibility.</p>
 <p><strong>Best for:</strong> PUBLIC data, quick answers, rapid
 prototyping.</p>
 </section><section><h2 class="section-heading" id="local-ai-run-on-sagehen">Local AI (Run on Sagehen)<a class="anchor" aria-label="anchor" href="#local-ai-run-on-sagehen"></a>
@@ -1535,9 +1660,9 @@ prototyping.</p>
 <p><strong>Pros:</strong> Data stays on Pomona infrastructure, can use
 RESTRICTED and PROPRIETARY data, no subscription cost, full control,
 reproducible results.</p>
-<p><strong>Cons:</strong> Smaller models (lower quality than GPT-4),
-setup required, slower responses (GPU-dependent), GPU queue wait
-times.</p>
+<p><strong>Cons:</strong> generally smaller models than the leading
+hosted ones, setup required, slower responses (GPU-dependent), GPU queue
+wait times.</p>
 <p><strong>Best for:</strong> RESTRICTED data, sensitive research,
 reproducible pipelines, batch processing.</p>
 </section><section><h2 class="section-heading" id="decision-framework">Decision Framework<a class="anchor" aria-label="anchor" href="#decision-framework"></a>
@@ -1546,7 +1671,7 @@ reproducible pipelines, batch processing.</p>
 <pre><code>Use Cloud AI (ChatGPT/Claude) when:
   Data is PUBLIC
   Speed is critical
-  You need the latest state-of-the-art
+  You need the strongest available model
   One-off questions
 
 Use Local AI (Sagehen) when:
@@ -1889,7 +2014,7 @@ environment, sets HF_HOME, and verifies GPU access by printing
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1941,9 +2066,9 @@ validated</li>
 </div>
 </div>
 <!-- highlight <labname>/<myusername> placeholders in code blocks; remove if the varnish theme handles this natively -->
-<script>(function(){var CSS='.sh-placeholder{color:#c2410c;font-weight:700}[data-bs-theme="dark"] .sh-placeholder,html.dark .sh-placeholder{color:#fdba74}@media (prefers-color-scheme: dark){[data-bs-theme="auto"] .sh-placeholder{color:#fdba74}}';var RX=/<labname>|<myusername>/g;function firstMatch(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),nodes=[],full='';while(w.nextNode()){nodes.push({n:w.currentNode,s:full.length});full+=w.currentNode.nodeValue;}RX.lastIndex=0;var m;while((m=RX.exec(full))){var s=m.index,e=s+m[0].length,inSpan=false,parts=[];for(var j=0;j<nodes.length;j++){var ns=nodes[j].s,ne=ns+nodes[j].n.nodeValue.length;if(ne<=s||ns>=e)continue;parts.push({node:nodes[j].n,a:Math.max(s-ns,0),b:Math.min(e-ns,nodes[j].n.nodeValue.length)});var p=nodes[j].n.parentNode;while(p&&p!==el){if(p.classList&&p.classList.contains('sh-placeholder')){inSpan=true;break;}p=p.parentNode;}}if(!inSpan&&parts.length)return parts;}return null;}function wrapParts(parts){for(var i=parts.length-1;i>=0;i--){var t=parts[i].node,txt=t.nodeValue,a=parts[i].a,b=parts[i].b;var span=document.createElement('span');span.className='sh-placeholder';span.textContent=txt.slice(a,b);var f=document.createDocumentFragment();if(a>0)f.appendChild(document.createTextNode(txt.slice(0,a)));f.appendChild(span);if(b<txt.length)f.appendChild(document.createTextNode(txt.slice(b)));t.parentNode.replaceChild(f,t);}}function run(){var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);document.querySelectorAll('pre,code').forEach(function(el){var guard=0,parts;while((parts=firstMatch(el))&&guard++<500){wrapParts(parts);}});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}else{run();}})();</script><!-- Reference links for workshop episodes --></section></section><section id="aio-08-ollama-local-llms"><p>Content from <a href="08-ollama-local-llms.html">Ollama and Local LLMs</a></p>
+<script>(function(){var CSS='.sh-placeholder{color:#c2410c;font-weight:700}[data-bs-theme="dark"] .sh-placeholder,html.dark .sh-placeholder{color:#fdba74}@media (prefers-color-scheme: dark){[data-bs-theme="auto"] .sh-placeholder{color:#fdba74}}';var RX=/<labname>|<myusername>/g;function firstMatch(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),nodes=[],full='';while(w.nextNode()){nodes.push({n:w.currentNode,s:full.length});full+=w.currentNode.nodeValue;}RX.lastIndex=0;var m;while((m=RX.exec(full))){var s=m.index,e=s+m[0].length,inSpan=false,parts=[];for(var j=0;j<nodes.length;j++){var ns=nodes[j].s,ne=ns+nodes[j].n.nodeValue.length;if(ne<=s||ns>=e)continue;parts.push({node:nodes[j].n,a:Math.max(s-ns,0),b:Math.min(e-ns,nodes[j].n.nodeValue.length)});var p=nodes[j].n.parentNode;while(p&&p!==el){if(p.classList&&p.classList.contains('sh-placeholder')){inSpan=true;break;}p=p.parentNode;}}if(!inSpan&&parts.length)return parts;}return null;}function wrapParts(parts){for(var i=parts.length-1;i>=0;i--){var t=parts[i].node,txt=t.nodeValue,a=parts[i].a,b=parts[i].b;var span=document.createElement('span');span.className='sh-placeholder';span.textContent=txt.slice(a,b);var f=document.createDocumentFragment();if(a>0)f.appendChild(document.createTextNode(txt.slice(0,a)));f.appendChild(span);if(b<txt.length)f.appendChild(document.createTextNode(txt.slice(b)));t.parentNode.replaceChild(f,t);}}function run(){var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);document.querySelectorAll('pre,code').forEach(function(el){var guard=0,parts;while((parts=firstMatch(el))&&guard++<500){wrapParts(parts);}});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}else{run();}})();</script><!-- Reference links for workshop episodes --></section></section><section id="aio-08-ollama-local-llms"><p>Content from <a href="08-ollama-local-llms.html">Running Local LLMs on Sagehen</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/08-ollama-local-llms.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 25 minutes</p>
@@ -1988,29 +2113,43 @@ validated</li>
 <div id="why-not-ollama" class="callout-inner">
 <h3 class="callout-title">Why Not Ollama?</h3>
 <div class="callout-content">
-<p>Despite this episode’s title, we don’t use Ollama on Sagehen: there
-is no <code>ollama</code> module, and running your own Ollama binary is
-blocked by permissions. Instead we use <strong>Hugging Face
-Transformers</strong>, which install cleanly into your conda environment
-and give you the same local, private LLM capability. If Ollama becomes
-available cluster-wide later, every concept here transfers directly.</p>
+<p>Ollama is the tool most guides reach for, so it is worth saying
+plainly: we do not use it on Sagehen. There is no <code>ollama</code>
+module, and running your own Ollama binary is blocked by
+permissions.</p>
+<p>Instead we use <strong>Hugging Face Transformers</strong>, which
+installs cleanly into your conda environment and gives you the same
+local, private LLM capability with far more control over quantization
+and model revisions. If Ollama becomes available cluster-wide later,
+every concept here transfers directly.</p>
+<p>(The file name for this episode still says <code>ollama</code> so
+that existing links keep working.)</p>
 </div>
 </div>
 </div>
-<section><h2 class="section-heading" id="setting-up-llama-on-sagehen">Setting Up Llama on Sagehen<a class="anchor" aria-label="anchor" href="#setting-up-llama-on-sagehen"></a>
+<section><h2 class="section-heading" id="setting-up-a-local-llm-on-sagehen">Setting Up a Local LLM on Sagehen<a class="anchor" aria-label="anchor" href="#setting-up-a-local-llm-on-sagehen"></a>
 </h2>
 <hr class="half-width">
 <div class="section level3">
-<h3 id="step-1-request-model-access">Step 1: Request Model Access<a class="anchor" aria-label="anchor" href="#step-1-request-model-access"></a>
+<h3 id="step-1-choose-a-model">Step 1: Choose a Model<a class="anchor" aria-label="anchor" href="#step-1-choose-a-model"></a>
 </h3>
-<p>Llama models require accepting a license:</p>
+<p>We use <code>openai/gpt-oss-20b</code>. It is Apache 2.0 licensed and
+<strong>ungated</strong>, so it downloads without an access request —
+which matters in a workshop where twenty people would otherwise each be
+waiting on licence approval.</p>
+<p>Some models are <strong>gated</strong> and do require approval. Llama
+is the common example:</p>
 <ol style="list-style-type: decimal">
-<li>Visit
-<code>https://huggingface.co/meta-llama/Llama-2-7b-chat-hf</code>
+<li>Visit the model page, for example
+<code>https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct</code>
 </li>
-<li>Click “Request Access” and accept the license</li>
-<li>Generate a Hugging Face token for authentication</li>
+<li>Click “Request Access” and accept the licence</li>
+<li>Create a Hugging Face token and run
+<code>huggingface-cli login</code>
+</li>
 </ol>
+<p>Approval is usually quick but is not instant, and it is not
+guaranteed. Plan around it rather than discovering it mid-job.</p>
 </div>
 <div class="section level3">
 <h3 id="step-2-create-environment-and-install">Step 2: Create Environment and Install<a class="anchor" aria-label="anchor" href="#step-2-create-environment-and-install"></a>
@@ -2019,8 +2158,8 @@ available cluster-wide later, every concept here transfers directly.</p>
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1" aria-label="code-block-1-1"></a><span class="ex">module</span> load anaconda3</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1" aria-label="code-block-1-2"></a><span class="ex">conda</span> create <span class="at">-n</span> llama_env python=3.11</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1" aria-label="code-block-1-3"></a><span class="ex">conda</span> activate llama_env</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1" aria-label="code-block-1-2"></a><span class="ex">conda</span> create <span class="at">-n</span> llm_env python=3.11</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1" aria-label="code-block-1-3"></a><span class="ex">conda</span> activate llm_env</span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1" aria-label="code-block-1-4"></a><span class="ex">pip</span> install transformers torch accelerate safetensors bitsandbytes</span></code></pre>
 </div>
 </div>
@@ -2033,18 +2172,42 @@ available cluster-wide later, every concept here transfers directly.</p>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="im">import</span> torch</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1" aria-label="code-block-2-2"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer, AutoModelForCausalLM</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1" aria-label="code-block-2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1" aria-label="code-block-2-4"></a>model_name <span class="op">=</span> <span class="st">"meta-llama/Llama-2-7b-chat-hf"</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1" aria-label="code-block-2-4"></a>model_name <span class="op">=</span> <span class="st">"openai/gpt-oss-20b"</span></span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1" aria-label="code-block-2-5"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(model_name)</span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1" aria-label="code-block-2-6"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(</span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1" aria-label="code-block-2-7"></a>    model_name,</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1" aria-label="code-block-2-8"></a>    torch_dtype<span class="op">=</span>torch.float16,</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1" aria-label="code-block-2-8"></a>    dtype<span class="op">=</span>torch.bfloat16,</span>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1" aria-label="code-block-2-9"></a>    device_map<span class="op">=</span><span class="st">"auto"</span></span>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1" aria-label="code-block-2-10"></a>)</span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1" aria-label="code-block-2-11"></a></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1" aria-label="code-block-2-12"></a>prompt <span class="op">=</span> <span class="st">"Explain photosynthesis in simple terms."</span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1" aria-label="code-block-2-13"></a>inputs <span class="op">=</span> tokenizer(prompt, return_tensors<span class="op">=</span><span class="st">"pt"</span>).to(<span class="st">"cuda"</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1" aria-label="code-block-2-14"></a>outputs <span class="op">=</span> model.generate(<span class="op">**</span>inputs, max_length<span class="op">=</span><span class="dv">200</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1" aria-label="code-block-2-13"></a>inputs <span class="op">=</span> tokenizer(prompt, return_tensors<span class="op">=</span><span class="st">"pt"</span>).to(model.device)</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1" aria-label="code-block-2-14"></a>outputs <span class="op">=</span> model.generate(<span class="op">**</span>inputs, max_new_tokens<span class="op">=</span><span class="dv">200</span>)</span>
 <span id="cb2-15"><a href="#cb2-15" tabindex="-1" aria-label="code-block-2-15"></a><span class="bu">print</span>(tokenizer.decode(outputs[<span class="dv">0</span>], skip_special_tokens<span class="op">=</span><span class="va">True</span>))</span></code></pre>
+</div>
+<div id="set-the-cache-directory-before-you-download" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="set-the-cache-directory-before-you-download" class="callout-inner">
+<h3 class="callout-title">Set the Cache Directory Before You
+Download</h3>
+<div class="callout-content">
+<p>Model weights are large and Hugging Face caches them under
+<code>~/.cache</code> by default, which will consume your 100 GB
+<code>/rhome</code> quota quickly. Point the cache at your lab’s storage
+instead:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="bu">export</span> <span class="va">HF_HOME</span><span class="op">=</span>/bigdata/lab/<span class="op">&lt;</span>labname<span class="op">&gt;</span>/huggingface_cache</span></code></pre>
+</div>
+<p>Put that line in your job script. Do <strong>not</strong> cache to
+<code>/scratch</code> — it is deleted when the job ends, so you would
+re-download every run.</p>
+</div>
+</div>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="using-4-bit-quantization">Using 4-bit Quantization<a class="anchor" aria-label="anchor" href="#using-4-bit-quantization"></a>
@@ -2052,74 +2215,75 @@ available cluster-wide later, every concept here transfers directly.</p>
 <hr class="half-width">
 <p>Quantization reduces memory by 75%, fitting larger models on smaller
 GPUs:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="im">from</span> transformers <span class="im">import</span> BitsAndBytesConfig, AutoModelForCausalLM</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1" aria-label="code-block-3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1" aria-label="code-block-3-3"></a>bnb_config <span class="op">=</span> BitsAndBytesConfig(</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1" aria-label="code-block-3-4"></a>    load_in_4bit<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1" aria-label="code-block-3-5"></a>    bnb_4bit_use_double_quant<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1" aria-label="code-block-3-6"></a>    bnb_4bit_quant_type<span class="op">=</span><span class="st">"nf4"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1" aria-label="code-block-3-7"></a>    bnb_4bit_compute_dtype<span class="op">=</span>torch.bfloat16</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1" aria-label="code-block-3-8"></a>)</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1" aria-label="code-block-3-9"></a></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1" aria-label="code-block-3-10"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1" aria-label="code-block-3-11"></a>    <span class="st">"meta-llama/Llama-2-70b-chat-hf"</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1" aria-label="code-block-3-12"></a>    quantization_config<span class="op">=</span>bnb_config,</span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1" aria-label="code-block-3-13"></a>    device_map<span class="op">=</span><span class="st">"auto"</span></span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1" aria-label="code-block-3-14"></a>)</span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1" aria-label="code-block-3-15"></a><span class="co"># 70B model now fits in ~40GB instead of 140GB</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="im">from</span> transformers <span class="im">import</span> BitsAndBytesConfig, AutoModelForCausalLM</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1" aria-label="code-block-4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1" aria-label="code-block-4-3"></a>bnb_config <span class="op">=</span> BitsAndBytesConfig(</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1" aria-label="code-block-4-4"></a>    load_in_4bit<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1" aria-label="code-block-4-5"></a>    bnb_4bit_use_double_quant<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1" aria-label="code-block-4-6"></a>    bnb_4bit_quant_type<span class="op">=</span><span class="st">"nf4"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1" aria-label="code-block-4-7"></a>    bnb_4bit_compute_dtype<span class="op">=</span>torch.bfloat16</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1" aria-label="code-block-4-8"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1" aria-label="code-block-4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1" aria-label="code-block-4-10"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1" aria-label="code-block-4-11"></a>    <span class="st">"Qwen/Qwen3-32B"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1" aria-label="code-block-4-12"></a>    quantization_config<span class="op">=</span>bnb_config,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1" aria-label="code-block-4-13"></a>    device_map<span class="op">=</span><span class="st">"auto"</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1" aria-label="code-block-4-14"></a>)</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1" aria-label="code-block-4-15"></a><span class="co"># 32B model now fits in ~16GB instead of ~64GB</span></span></code></pre>
 </div>
 </section><section><h2 class="section-heading" id="building-a-private-ai-pipeline">Building a Private AI Pipeline<a class="anchor" aria-label="anchor" href="#building-a-private-ai-pipeline"></a>
 </h2>
 <hr class="half-width">
 <p>For processing restricted data where nothing leaves Sagehen:</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="kw">class</span> LocalAIPipeline:</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1" aria-label="code-block-4-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, model_name<span class="op">=</span><span class="st">"meta-llama/Llama-2-7b-chat-hf"</span>):</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1" aria-label="code-block-4-3"></a>        <span class="va">self</span>.tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(model_name)</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1" aria-label="code-block-4-4"></a>        <span class="va">self</span>.model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1" aria-label="code-block-4-5"></a>            model_name, torch_dtype<span class="op">=</span>torch.float16, device_map<span class="op">=</span><span class="st">"auto"</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1" aria-label="code-block-4-6"></a>        )</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1" aria-label="code-block-4-7"></a></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1" aria-label="code-block-4-8"></a>    <span class="kw">def</span> analyze(<span class="va">self</span>, text, task<span class="op">=</span><span class="st">"summarize"</span>):</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1" aria-label="code-block-4-9"></a>        prompts <span class="op">=</span> {</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1" aria-label="code-block-4-10"></a>            <span class="st">"summarize"</span>: <span class="ss">f"Summarize in 2 sentences:</span><span class="ch">\n</span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1" aria-label="code-block-4-11"></a>            <span class="st">"classify"</span>: <span class="ss">f"Classify sentiment (positive/negative/neutral):</span><span class="ch">\n</span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1" aria-label="code-block-4-12"></a>            <span class="st">"extract"</span>: <span class="ss">f"Extract key points:</span><span class="ch">\n</span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1" aria-label="code-block-4-13"></a>        }</span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1" aria-label="code-block-4-14"></a>        prompt <span class="op">=</span> prompts.get(task, text)</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1" aria-label="code-block-4-15"></a>        inputs <span class="op">=</span> <span class="va">self</span>.tokenizer(prompt, return_tensors<span class="op">=</span><span class="st">"pt"</span>).to(<span class="va">self</span>.model.device)</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1" aria-label="code-block-4-16"></a>        <span class="cf">with</span> torch.no_grad():</span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1" aria-label="code-block-4-17"></a>            outputs <span class="op">=</span> <span class="va">self</span>.model.generate(<span class="op">**</span>inputs, max_new_tokens<span class="op">=</span><span class="dv">200</span>,</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1" aria-label="code-block-4-18"></a>                                         do_sample<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1" aria-label="code-block-4-19"></a>        <span class="cf">return</span> <span class="va">self</span>.tokenizer.decode(outputs[<span class="dv">0</span>], skip_special_tokens<span class="op">=</span><span class="va">True</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="kw">class</span> LocalAIPipeline:</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1" aria-label="code-block-5-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, model_name<span class="op">=</span><span class="st">"openai/gpt-oss-20b"</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1" aria-label="code-block-5-3"></a>        <span class="va">self</span>.tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(model_name)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1" aria-label="code-block-5-4"></a>        <span class="va">self</span>.model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1" aria-label="code-block-5-5"></a>            model_name, dtype<span class="op">=</span>torch.bfloat16, device_map<span class="op">=</span><span class="st">"auto"</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1" aria-label="code-block-5-6"></a>        )</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1" aria-label="code-block-5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1" aria-label="code-block-5-8"></a>    <span class="kw">def</span> analyze(<span class="va">self</span>, text, task<span class="op">=</span><span class="st">"summarize"</span>):</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1" aria-label="code-block-5-9"></a>        prompts <span class="op">=</span> {</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1" aria-label="code-block-5-10"></a>            <span class="st">"summarize"</span>: <span class="ss">f"Summarize in 2 sentences:</span><span class="ch">\n</span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1" aria-label="code-block-5-11"></a>            <span class="st">"classify"</span>: <span class="ss">f"Classify sentiment (positive/negative/neutral):</span><span class="ch">\n</span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1" aria-label="code-block-5-12"></a>            <span class="st">"extract"</span>: <span class="ss">f"Extract key points:</span><span class="ch">\n</span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1" aria-label="code-block-5-13"></a>        }</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1" aria-label="code-block-5-14"></a>        prompt <span class="op">=</span> prompts.get(task, text)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1" aria-label="code-block-5-15"></a>        inputs <span class="op">=</span> <span class="va">self</span>.tokenizer(prompt, return_tensors<span class="op">=</span><span class="st">"pt"</span>).to(<span class="va">self</span>.model.device)</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1" aria-label="code-block-5-16"></a>        <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1" aria-label="code-block-5-17"></a>            outputs <span class="op">=</span> <span class="va">self</span>.model.generate(<span class="op">**</span>inputs, max_new_tokens<span class="op">=</span><span class="dv">200</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1" aria-label="code-block-5-18"></a>                                         do_sample<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1" aria-label="code-block-5-19"></a>        <span class="cf">return</span> <span class="va">self</span>.tokenizer.decode(outputs[<span class="dv">0</span>], skip_special_tokens<span class="op">=</span><span class="va">True</span>)</span></code></pre>
 </div>
 </section><section><h2 class="section-heading" id="auditing-ai-usage">Auditing AI Usage<a class="anchor" aria-label="anchor" href="#auditing-ai-usage"></a>
 </h2>
 <hr class="half-width">
 <p>Keep records for Pomona compliance:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="im">import</span> json</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1" aria-label="code-block-5-2"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1" aria-label="code-block-5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1" aria-label="code-block-5-4"></a>usage_log <span class="op">=</span> {</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1" aria-label="code-block-5-5"></a>    <span class="st">"timestamp"</span>: datetime.now().isoformat(),</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1" aria-label="code-block-5-6"></a>    <span class="st">"model"</span>: <span class="st">"Llama-2-7b-chat"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1" aria-label="code-block-5-7"></a>    <span class="st">"data_type"</span>: <span class="st">"Restricted (FERPA)"</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1" aria-label="code-block-5-8"></a>    <span class="st">"task"</span>: <span class="st">"Sentiment classification"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1" aria-label="code-block-5-9"></a>    <span class="st">"input_tokens"</span>: <span class="dv">500</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1" aria-label="code-block-5-10"></a>    <span class="st">"output_tokens"</span>: <span class="dv">200</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1" aria-label="code-block-5-11"></a>}</span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1" aria-label="code-block-5-12"></a></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1" aria-label="code-block-5-13"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"ai_usage_log.json"</span>, <span class="st">"a"</span>) <span class="im">as</span> f:</span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1" aria-label="code-block-5-14"></a>    json.dump(usage_log, f)</span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1" aria-label="code-block-5-15"></a>    f.write(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="im">import</span> json</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1" aria-label="code-block-6-2"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1" aria-label="code-block-6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1" aria-label="code-block-6-4"></a>usage_log <span class="op">=</span> {</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1" aria-label="code-block-6-5"></a>    <span class="st">"timestamp"</span>: datetime.now().isoformat(),</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1" aria-label="code-block-6-6"></a>    <span class="st">"model"</span>: <span class="st">"openai/gpt-oss-20b"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1" aria-label="code-block-6-7"></a>    <span class="st">"model_revision"</span>: <span class="st">"a1b2c3d"</span>,   <span class="co"># pin the exact weights for reproducibility</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1" aria-label="code-block-6-8"></a>    <span class="st">"data_type"</span>: <span class="st">"Restricted (FERPA)"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1" aria-label="code-block-6-9"></a>    <span class="st">"task"</span>: <span class="st">"Sentiment classification"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1" aria-label="code-block-6-10"></a>    <span class="st">"input_tokens"</span>: <span class="dv">500</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1" aria-label="code-block-6-11"></a>    <span class="st">"output_tokens"</span>: <span class="dv">200</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1" aria-label="code-block-6-12"></a>}</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1" aria-label="code-block-6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1" aria-label="code-block-6-14"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"ai_usage_log.json"</span>, <span class="st">"a"</span>) <span class="im">as</span> f:</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1" aria-label="code-block-6-15"></a>    json.dump(usage_log, f)</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1" aria-label="code-block-6-16"></a>    f.write(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre>
 </div>
 <div id="model-quality-vs.-size-tradeoff" class="callout">
 <div class="callout-square">
@@ -2147,7 +2311,7 @@ the quality-efficiency tradeoff is acceptable.</p>
 <p>Write a Slurm batch script that:</p>
 <ol style="list-style-type: decimal">
 <li>Loads modules and activates a conda environment</li>
-<li>Loads Llama 2 7B with half precision</li>
+<li>Loads <code>gpt-oss-20b</code> in bfloat16</li>
 <li>Asks it a question about machine learning</li>
 <li>Times the inference and prints the result</li>
 </ol>
@@ -2159,37 +2323,41 @@ the quality-efficiency tradeoff is acceptable.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1" aria-label="code-block-6-2"></a><span class="co">#SBATCH --partition=gpu</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1" aria-label="code-block-6-3"></a><span class="co">#SBATCH --gres=gpu:1</span></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1" aria-label="code-block-6-4"></a><span class="co">#SBATCH --mem=32GB</span></span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1" aria-label="code-block-6-5"></a><span class="co">#SBATCH --time=00:10:00</span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1" aria-label="code-block-6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1" aria-label="code-block-6-7"></a><span class="ex">module</span> purge <span class="kw">&amp;&amp;</span> <span class="ex">module</span> load anaconda3 cuda/12.2.1</span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1" aria-label="code-block-6-8"></a><span class="ex">conda</span> activate llama_env</span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1" aria-label="code-block-6-9"></a></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1" aria-label="code-block-6-10"></a><span class="ex">python3</span> <span class="op">&lt;&lt; 'EOF'</span></span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1" aria-label="code-block-6-11"></a><span class="st">import time, torch</span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1" aria-label="code-block-6-12"></a><span class="st">from transformers import AutoTokenizer, AutoModelForCausalLM</span></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1" aria-label="code-block-6-13"></a></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1" aria-label="code-block-6-14"></a><span class="st">model_name = "meta-llama/Llama-2-7b-chat-hf"</span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1" aria-label="code-block-6-15"></a><span class="st">tokenizer = AutoTokenizer.from_pretrained(model_name)</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1" aria-label="code-block-6-16"></a><span class="st">model = AutoModelForCausalLM.from_pretrained(</span></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1" aria-label="code-block-6-17"></a><span class="st">    model_name, torch_dtype=torch.float16, device_map="auto")</span></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1" aria-label="code-block-6-18"></a></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1" aria-label="code-block-6-19"></a><span class="st">question = "What is machine learning?"</span></span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1" aria-label="code-block-6-20"></a><span class="st">inputs = tokenizer(question, return_tensors="pt").to(model.device)</span></span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1" aria-label="code-block-6-21"></a><span class="st">start = time.time()</span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1" aria-label="code-block-6-22"></a><span class="st">with torch.no_grad():</span></span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1" aria-label="code-block-6-23"></a><span class="st">    outputs = model.generate(**inputs, max_new_tokens=150)</span></span>
-<span id="cb6-24"><a href="#cb6-24" tabindex="-1" aria-label="code-block-6-24"></a><span class="st">print(f"Time: {time.time() - start:.1f}s")</span></span>
-<span id="cb6-25"><a href="#cb6-25" tabindex="-1" aria-label="code-block-6-25"></a><span class="st">print(tokenizer.decode(outputs[0], skip_special_tokens=True))</span></span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1" aria-label="code-block-6-26"></a><span class="op">EOF</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1" aria-label="code-block-7-2"></a><span class="co">#SBATCH --job-name=llm-inference</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1" aria-label="code-block-7-3"></a><span class="co">#SBATCH --partition=gpu</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1" aria-label="code-block-7-4"></a><span class="co">#SBATCH --gres=gpu:1</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1" aria-label="code-block-7-5"></a><span class="co">#SBATCH --mem=32GB</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1" aria-label="code-block-7-6"></a><span class="co">#SBATCH --time=00:10:00</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1" aria-label="code-block-7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1" aria-label="code-block-7-8"></a><span class="ex">module</span> purge <span class="kw">&amp;&amp;</span> <span class="ex">module</span> load anaconda3 cuda/12.2.1</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1" aria-label="code-block-7-9"></a><span class="ex">conda</span> activate llm_env</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1" aria-label="code-block-7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1" aria-label="code-block-7-11"></a><span class="co"># Keep model weights off your /rhome quota</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1" aria-label="code-block-7-12"></a><span class="bu">export</span> <span class="va">HF_HOME</span><span class="op">=</span>/bigdata/lab/<span class="op">&lt;</span>labname<span class="op">&gt;</span>/huggingface_cache</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1" aria-label="code-block-7-13"></a></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1" aria-label="code-block-7-14"></a><span class="ex">python3</span> <span class="op">&lt;&lt; 'EOF'</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1" aria-label="code-block-7-15"></a><span class="st">import time, torch</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1" aria-label="code-block-7-16"></a><span class="st">from transformers import AutoTokenizer, AutoModelForCausalLM</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1" aria-label="code-block-7-17"></a></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1" aria-label="code-block-7-18"></a><span class="st">model_name = "openai/gpt-oss-20b"</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1" aria-label="code-block-7-19"></a><span class="st">tokenizer = AutoTokenizer.from_pretrained(model_name)</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1" aria-label="code-block-7-20"></a><span class="st">model = AutoModelForCausalLM.from_pretrained(</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1" aria-label="code-block-7-21"></a><span class="st">    model_name, dtype=torch.bfloat16, device_map="auto")</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1" aria-label="code-block-7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1" aria-label="code-block-7-23"></a><span class="st">question = "What is machine learning?"</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1" aria-label="code-block-7-24"></a><span class="st">inputs = tokenizer(question, return_tensors="pt").to(model.device)</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1" aria-label="code-block-7-25"></a><span class="st">start = time.time()</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1" aria-label="code-block-7-26"></a><span class="st">with torch.no_grad():</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1" aria-label="code-block-7-27"></a><span class="st">    outputs = model.generate(**inputs, max_new_tokens=150)</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1" aria-label="code-block-7-28"></a><span class="st">print(f"Time: {time.time() - start:.1f}s")</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1" aria-label="code-block-7-29"></a><span class="st">print(tokenizer.decode(outputs[0], skip_special_tokens=True))</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1" aria-label="code-block-7-30"></a><span class="op">EOF</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -2203,22 +2371,26 @@ the quality-efficiency tradeoff is acceptable.</p>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>Open-source LLMs (Llama, Mistral, Phi) run locally on Sagehen
-GPUs</li>
+<li>Open-weight LLMs (gpt-oss, Qwen, Mistral, Phi) run locally on
+Sagehen GPUs</li>
+<li>Prefer ungated, permissively licensed models – no access request to
+wait on</li>
 <li>4-bit quantization reduces memory by 75% with minimal quality
 loss</li>
+<li>Set <code>HF_HOME</code> to lab storage so weights do not fill your
+<code>/rhome</code> quota</li>
 <li>Build private pipelines for restricted data that never leaves
 Sagehen</li>
-<li>Log AI usage for Pomona compliance with timestamps, model, and data
-type</li>
+<li>Log AI usage for Pomona compliance with timestamps, model, revision
+and data type</li>
 </ul>
 </div>
 </div>
 </div>
-<!-- Reference links for workshop episodes -->
-</section></section><section id="aio-09-responsible-practices"><p>Content from <a href="09-responsible-practices.html">Responsible AI Practices</a></p>
+<!-- highlight <labname>/<myusername> placeholders in code blocks; remove if the varnish theme handles this natively -->
+<script>(function(){var CSS='.sh-placeholder{color:#c2410c;font-weight:700}[data-bs-theme="dark"] .sh-placeholder,html.dark .sh-placeholder{color:#fdba74}@media (prefers-color-scheme: dark){[data-bs-theme="auto"] .sh-placeholder{color:#fdba74}}';var RX=/<labname>|<myusername>/g;function firstMatch(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),nodes=[],full='';while(w.nextNode()){nodes.push({n:w.currentNode,s:full.length});full+=w.currentNode.nodeValue;}RX.lastIndex=0;var m;while((m=RX.exec(full))){var s=m.index,e=s+m[0].length,inSpan=false,parts=[];for(var j=0;j<nodes.length;j++){var ns=nodes[j].s,ne=ns+nodes[j].n.nodeValue.length;if(ne<=s||ns>=e)continue;parts.push({node:nodes[j].n,a:Math.max(s-ns,0),b:Math.min(e-ns,nodes[j].n.nodeValue.length)});var p=nodes[j].n.parentNode;while(p&&p!==el){if(p.classList&&p.classList.contains('sh-placeholder')){inSpan=true;break;}p=p.parentNode;}}if(!inSpan&&parts.length)return parts;}return null;}function wrapParts(parts){for(var i=parts.length-1;i>=0;i--){var t=parts[i].node,txt=t.nodeValue,a=parts[i].a,b=parts[i].b;var span=document.createElement('span');span.className='sh-placeholder';span.textContent=txt.slice(a,b);var f=document.createDocumentFragment();if(a>0)f.appendChild(document.createTextNode(txt.slice(0,a)));f.appendChild(span);if(b<txt.length)f.appendChild(document.createTextNode(txt.slice(b)));t.parentNode.replaceChild(f,t);}}function run(){var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);document.querySelectorAll('pre,code').forEach(function(el){var guard=0,parts;while((parts=firstMatch(el))&&guard++<500){wrapParts(parts);}});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}else{run();}})();</script><!-- Reference links for workshop episodes --></section></section><section id="aio-09-responsible-practices"><p>Content from <a href="09-responsible-practices.html">Responsible AI Practices</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/09-responsible-practices.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 20 minutes</p>
@@ -2266,10 +2438,9 @@ Requirements:</p>
 <li>Cite the model and version used</li>
 <li>Describe your modifications and verification</li>
 </ul>
-<p><strong>Example disclosure:</strong> “I used Llama 2 (7B-chat)
-running on Sagehen HPC to generate initial outlines. The model produced:
-[quote]. I then revised and verified all claims with primary
-sources.”</p>
+<p><strong>Example disclosure:</strong> “I used gpt-oss-20b running on
+Sagehen HPC to generate initial outlines. The model produced: [quote]. I
+then revised and verified all claims with primary sources.”</p>
 </section><section><h2 class="section-heading" id="hallucinations-and-verification">Hallucinations and Verification<a class="anchor" aria-label="anchor" href="#hallucinations-and-verification"></a>
 </h2>
 <hr class="half-width">
@@ -2291,8 +2462,8 @@ accuracy.</p>
 <div id="hallucinations-affect-all-models" class="callout-inner">
 <h3 class="callout-title">Hallucinations Affect All Models</h3>
 <div class="callout-content">
-<p>Both cloud and local models hallucinate. ChatGPT, Claude, and Llama
-all confidently generate false information. Never trust AI output
+<p>Both cloud and local models hallucinate. Hosted and local models
+alike confidently generate false information. Never trust AI output
 without verification, especially in research.</p>
 </div>
 </div>
@@ -2302,14 +2473,14 @@ without verification, especially in research.</p>
 <hr class="half-width">
 <p><strong>In Methods Section:</strong></p>
 <pre><code>Statistical analyses were performed in Python 3.11. For interpretation of
-preliminary results, we used Llama-2-7b-chat (Meta) on Pomona's Sagehen HPC
+preliminary results, we used gpt-oss-20b (OpenAI, Apache 2.0) on Pomona's Sagehen HPC
 to generate initial hypotheses, which we then tested using formal statistical
 tests. All reported results are based on independent analysis of raw data.</code></pre>
 <p><strong>In Code Comments:</strong></p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="co"># DISCLOSURE: Initial analysis drafted with local Llama model.</span></span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="co"># DISCLOSURE: Initial analysis drafted with a local model on Sagehen.</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1" aria-label="code-block-2-2"></a><span class="co"># All numerical results independently verified against raw data.</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1" aria-label="code-block-2-3"></a><span class="co"># AI was not used for statistical inference.</span></span></code></pre>
 </div>
@@ -2343,7 +2514,8 @@ admission.</p>
 <p>Training and running large models consumes significant energy.
 Mitigate by:</p>
 <ul>
-<li>Using smaller models when possible (Phi instead of Llama-70B)</li>
+<li>Using smaller models when possible (Phi-4-mini instead of a
+100B-class model)</li>
 <li>Quantizing models (4-bit instead of 32-bit)</li>
 <li>Batching work for efficiency</li>
 <li>Considering environmental impact when choosing scale</li>
@@ -2422,7 +2594,7 @@ scale</li>
 <!-- Reference links for workshop episodes -->
 </section></section><section id="aio-10-ethics-next-steps"><p>Content from <a href="10-ethics-next-steps.html">Ethical Considerations and Next Steps</a></p>
 <hr>
-<p>Last updated on 2026-08-24 |
+<p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/10-ethics-next-steps.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 20 minutes</p>
@@ -2586,8 +2758,8 @@ Episode 4</li>
 <strong>Set up your environment</strong> on Sagehen following
 Episode 7</li>
 <li>
-<strong>Start small</strong> with Phi or Mistral 7B before scaling
-up</li>
+<strong>Start small</strong> with Phi-4-mini or an 8B-class model
+before scaling up</li>
 <li>
 <strong>Document everything</strong> – AI usage logs, verification
 steps, disclosures</li>
@@ -2624,11 +2796,11 @@ and AI capabilities</li>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p><strong>Example for genomics research:</strong></p>
-<p>“Gene annotation analysis: We used Llama-2-7b-chat running on
-Pomona’s Sagehen HPC to generate initial literature review outlines and
-suggest potential regulatory elements. These AI-generated suggestions
-were not used directly; they served as hypothesis-generation tools. All
-reported results (promoter identification, regulatory predictions) were
+<p>“Gene annotation analysis: We used gpt-oss-20b running on Pomona’s
+Sagehen HPC to generate initial literature review outlines and suggest
+potential regulatory elements. These AI-generated suggestions were not
+used directly; they served as hypothesis-generation tools. All reported
+results (promoter identification, regulatory predictions) were
 independently identified through systematic computational screening and
 validated against published databases. AI outputs included spurious
 regulatory elements and outdated citations that required manual

@@ -311,7 +311,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-ollama-local-llms.html">8. Ollama and Local LLMs</a>
+        <a href="08-ollama-local-llms.html">8. Running Local LLMs on Sagehen</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -412,8 +412,9 @@ selection</li>
 </ul></section><section id="02-types-of-models"><h2 class="section-heading"><a href="02-types-of-models.html">Types of AI Models</a></h2>
 <hr class="half-width">
 <ul>
-<li>LLMs range from 2.7B (Phi) to 70B+ (Llama) parameters with varying
-quality</li>
+<li>Useful local LLMs range from about 4B to over 100B parameters</li>
+<li>Choose on licence, size and whether the download is gated – not on
+leaderboards</li>
 <li>Quantization (4-bit) reduces memory by 75% with minimal quality
 loss</li>
 <li>Vision models (YOLO, Stable Diffusion) and scientific ML have
@@ -473,17 +474,21 @@ models</li>
 <code>sbatch</code> for batch jobs</li>
 <li>Start with smaller GPUs and scale up once your workflow is
 validated</li>
-</ul></section><section id="08-ollama-local-llms"><h2 class="section-heading"><a href="08-ollama-local-llms.html">Ollama and Local LLMs</a></h2>
+</ul></section><section id="08-ollama-local-llms"><h2 class="section-heading"><a href="08-ollama-local-llms.html">Running Local LLMs on Sagehen</a></h2>
 <hr class="half-width">
 <ul>
-<li>Open-source LLMs (Llama, Mistral, Phi) run locally on Sagehen
-GPUs</li>
+<li>Open-weight LLMs (gpt-oss, Qwen, Mistral, Phi) run locally on
+Sagehen GPUs</li>
+<li>Prefer ungated, permissively licensed models – no access request to
+wait on</li>
 <li>4-bit quantization reduces memory by 75% with minimal quality
 loss</li>
+<li>Set <code>HF_HOME</code> to lab storage so weights do not fill your
+<code>/rhome</code> quota</li>
 <li>Build private pipelines for restricted data that never leaves
 Sagehen</li>
-<li>Log AI usage for Pomona compliance with timestamps, model, and data
-type</li>
+<li>Log AI usage for Pomona compliance with timestamps, model, revision
+and data type</li>
 </ul></section><section id="09-responsible-practices"><h2 class="section-heading"><a href="09-responsible-practices.html">Responsible AI Practices</a></h2>
 <hr class="half-width">
 <ul>

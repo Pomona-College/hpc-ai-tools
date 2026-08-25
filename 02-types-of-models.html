@@ -266,7 +266,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-ollama-local-llms.html">8. Ollama and Local LLMs</a>
+        <a href="08-ollama-local-llms.html">8. Running Local LLMs on Sagehen</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -348,7 +348,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Types of AI Models</h1>
-        <p>Last updated on 2026-08-24 |
+        <p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/02-types-of-models.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -390,21 +390,54 @@ alternatives</li>
 </div>
 <section><h2 class="section-heading" id="large-language-models-in-detail">Large Language Models in Detail<a class="anchor" aria-label="anchor" href="#large-language-models-in-detail"></a></h2>
 <hr class="half-width"><div class="section level3">
-<h3 id="open-source-models-for-sagehen">Open-Source Models for Sagehen<a class="anchor" aria-label="anchor" href="#open-source-models-for-sagehen"></a></h3>
-<p><strong>Llama 2/3 (Meta):</strong></p>
-<ul><li>Sizes: 7B, 13B, 70B parameters</li>
-<li>7B fits easily on an L40S (48GB); 70B requires A100 (80GB)</li>
-<li>License: Llama Community License (free for research)</li>
-<li>Quality comparable to GPT-3.5 on many tasks</li>
-</ul><p><strong>Mistral 7B:</strong></p>
-<ul><li>Faster than Llama 2 7B with better instruction-following</li>
-<li>Fits on a single L40S</li>
-<li>Good balance of speed and quality</li>
-</ul><p><strong>Phi-2 (Microsoft):</strong></p>
-<ul><li>Only 2.7B parameters – runs on CPU if needed</li>
-<li>Surprisingly capable for its size</li>
-<li>Best for quick prototyping and low-resource scenarios</li>
-</ul></div>
+<h3 id="open-weight-models-for-sagehen">Open-Weight Models for Sagehen<a class="anchor" aria-label="anchor" href="#open-weight-models-for-sagehen"></a></h3>
+<p>Specific models turn over quickly. Choose along three axes that do
+not: <strong>licence</strong>, <strong>size</strong>, and whether the
+download is <strong>gated</strong>.</p>
+<p><em>The examples below are current as of August 2026.</em></p>
+<p><strong>gpt-oss (OpenAI)</strong> — <code>gpt-oss-20b</code>,
+<code>gpt-oss-120b</code></p>
+<ul><li>Apache 2.0, ungated: <code>pip install</code> and go, no access
+request</li>
+<li>20b runs in about 16 GB; 120b fits a single A100 (80 GB)</li>
+<li>The path of least resistance for workshop work and for
+publication</li>
+</ul><p><strong>Qwen3 (Alibaba)</strong></p>
+<ul><li>Apache 2.0, ungated, unusually wide range of sizes</li>
+<li>Strong multilingual coverage — worth knowing if your corpus is not
+English</li>
+</ul><p><strong>Mistral Small (Mistral AI)</strong></p>
+<ul><li>Apache 2.0; efficient general-purpose model that fits a single
+L40S</li>
+</ul><p><strong>Phi-4-mini (Microsoft)</strong></p>
+<ul><li>MIT licence, about 3.8B parameters</li>
+<li>The smallest thing here that is still useful; good for prototyping a
+pipeline before committing GPU hours</li>
+</ul><p><strong>Gemma 3 (Google)</strong> — multimodal, handles image input.
+Note the licence is Google’s own Gemma terms, <strong>not</strong> an
+OSI-approved open-source licence.</p>
+<p><strong>Llama 4 (Meta)</strong> — mixture-of-experts; Scout is 109B
+total / 17B active. Requires accepting the Llama Community Licence
+before download.</p>
+<div id="prefer-ungated-models-unless-you-need-otherwise" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="prefer-ungated-models-unless-you-need-otherwise" class="callout-inner">
+<h3 class="callout-title">Prefer Ungated Models Unless You Need
+Otherwise</h3>
+<div class="callout-content">
+<p>A gated model (Llama, among others) means: accept a licence on the
+model’s page, generate a token, then authenticate before downloading.
+That is fine for sustained project work, but it stalls a workshop and
+adds a licence term you must honour at publication.</p>
+<p>Unless a gated model gives you something you specifically need, start
+with an Apache 2.0 or MIT one.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="section level3">
 <h3 id="quantization-making-models-smaller">Quantization: Making Models Smaller<a class="anchor" aria-label="anchor" href="#quantization-making-models-smaller"></a></h3>
 <p>Quantization reduces model precision to use less GPU memory:</p>
@@ -466,9 +499,12 @@ preprocessing.</p>
 <h3 class="callout-title">Start Small, Scale Up</h3>
 <div class="callout-content">
 <p>Begin with the smallest model that meets your quality needs:</p>
-<ol style="list-style-type: decimal"><li>Try Phi 2.7B or Mistral 7B first</li>
-<li>If quality is insufficient, scale to Llama 13B</li>
-<li>Use Llama 70B only when smaller models clearly underperform</li>
+<ol style="list-style-type: decimal"><li>Try Phi-4-mini or an 8B-class model such as Qwen3 8B first</li>
+<li>If quality is insufficient, scale to a 20-30B model such as
+<code>gpt-oss-20b</code>
+</li>
+<li>Use a 100B-class model only when smaller ones clearly
+underperform</li>
 <li>Always use 4-bit quantization unless you need full precision</li>
 </ol><p>This conserves GPU resources and reduces queue wait times on
 Sagehen.</p>
@@ -501,21 +537,24 @@ data)</li>
 <div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>
-<strong>Summarizing papers (public data):</strong> Cloud AI
-(ChatGPT/Claude) is fine since papers are public. If you prefer local:
-Mistral 7B on an L40S.</li>
+<strong>Summarizing papers (public data):</strong> Cloud AI is fine
+since papers are public. If you prefer local: an 8B-class model on an
+L40S.</li>
 <li>
 <strong>Sentiment classification (proprietary):</strong> Local AI
-required. BERT (fine-tuned) or Mistral 7B on an L40S. Batch processing
-is efficient.</li>
+required. A fine-tuned encoder such as BERT, or an 8B-class instruct
+model, on an L40S. Batch processing is efficient.</li>
 <li>
 <strong>Object detection in microscopy:</strong> YOLO or ResNet on
 L40S depending on image resolution and batch size.</li>
 <li>
 <strong>Code generation (public data):</strong> Cloud AI is
-acceptable. Locally: Llama 13B or Mistral 7B give good code generation
-results.</li>
-</ol></div>
+acceptable. Locally, <code>gpt-oss-20b</code> on an L40S gives good code
+generation results.</li>
+</ol><p>Note that only scenario 2’s answer was forced by the <em>data</em>.
+The others were choices about cost and convenience — which is the normal
+case.</p>
+</div>
 </div>
 </div>
 </div>
@@ -526,8 +565,9 @@ results.</li>
 <span class="callout-header">Key Points</span>
 <div class="callout-inner">
 <div class="callout-content">
-<ul><li>LLMs range from 2.7B (Phi) to 70B+ (Llama) parameters with varying
-quality</li>
+<ul><li>Useful local LLMs range from about 4B to over 100B parameters</li>
+<li>Choose on licence, size and whether the download is gated – not on
+leaderboards</li>
 <li>Quantization (4-bit) reduces memory by 75% with minimal quality
 loss</li>
 <li>Vision models (YOLO, Stable Diffusion) and scientific ML have
@@ -598,7 +638,7 @@ scale up</li>
   "url": "https://pomona-college.github.io/hpc-ai-tools/02-types-of-models.html",
   "identifier": "https://pomona-college.github.io/hpc-ai-tools/02-types-of-models.html",
   "dateCreated": "2026-03-05",
-  "dateModified": "2026-08-24",
+  "dateModified": "2026-08-25",
   "datePublished": "2026-08-25"
 }
 

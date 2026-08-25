@@ -252,7 +252,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-ollama-local-llms.html">8. Ollama and Local LLMs</a>
+        <a href="08-ollama-local-llms.html">8. Running Local LLMs on Sagehen</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -339,7 +339,7 @@
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="08-ollama-local-llms.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Previous: Ollama and Local
+          Previous: Running Local LLMs
         </a>
         <a class="chapter-link float-end" href="10-ethics-next-steps.html" rel="next">
           Next: Ethical...
@@ -348,7 +348,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Responsible AI Practices</h1>
-        <p>Last updated on 2026-08-24 |
+        <p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/09-responsible-practices.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -393,10 +393,9 @@ Requirements:</p>
 <li>Quote or clearly mark AI-generated text</li>
 <li>Cite the model and version used</li>
 <li>Describe your modifications and verification</li>
-</ul><p><strong>Example disclosure:</strong> “I used Llama 2 (7B-chat)
-running on Sagehen HPC to generate initial outlines. The model produced:
-[quote]. I then revised and verified all claims with primary
-sources.”</p>
+</ul><p><strong>Example disclosure:</strong> “I used gpt-oss-20b running on
+Sagehen HPC to generate initial outlines. The model produced: [quote]. I
+then revised and verified all claims with primary sources.”</p>
 </section><section><h2 class="section-heading" id="hallucinations-and-verification">Hallucinations and Verification<a class="anchor" aria-label="anchor" href="#hallucinations-and-verification"></a></h2>
 <hr class="half-width"><p>AI models generate plausible-sounding text that is sometimes false.
 LLMs “hallucinate” facts, and confidence is not correlated with
@@ -414,8 +413,8 @@ accuracy.</p>
 <div id="hallucinations-affect-all-models" class="callout-inner">
 <h3 class="callout-title">Hallucinations Affect All Models</h3>
 <div class="callout-content">
-<p>Both cloud and local models hallucinate. ChatGPT, Claude, and Llama
-all confidently generate false information. Never trust AI output
+<p>Both cloud and local models hallucinate. Hosted and local models
+alike confidently generate false information. Never trust AI output
 without verification, especially in research.</p>
 </div>
 </div>
@@ -423,14 +422,14 @@ without verification, especially in research.</p>
 </section><section><h2 class="section-heading" id="disclosing-ai-use-in-publications">Disclosing AI Use in Publications<a class="anchor" aria-label="anchor" href="#disclosing-ai-use-in-publications"></a></h2>
 <hr class="half-width"><p><strong>In Methods Section:</strong></p>
 <pre><code>Statistical analyses were performed in Python 3.11. For interpretation of
-preliminary results, we used Llama-2-7b-chat (Meta) on Pomona's Sagehen HPC
+preliminary results, we used gpt-oss-20b (OpenAI, Apache 2.0) on Pomona's Sagehen HPC
 to generate initial hypotheses, which we then tested using formal statistical
 tests. All reported results are based on independent analysis of raw data.</code></pre>
 <p><strong>In Code Comments:</strong></p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="co"># DISCLOSURE: Initial analysis drafted with local Llama model.</span></span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="co"># DISCLOSURE: Initial analysis drafted with a local model on Sagehen.</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1" aria-label="code-block-2-2"></a><span class="co"># All numerical results independently verified against raw data.</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1" aria-label="code-block-2-3"></a><span class="co"># AI was not used for statistical inference.</span></span></code></pre>
 </div>
@@ -458,7 +457,8 @@ admission.</p>
 </section><section><h2 class="section-heading" id="environmental-impact">Environmental Impact<a class="anchor" aria-label="anchor" href="#environmental-impact"></a></h2>
 <hr class="half-width"><p>Training and running large models consumes significant energy.
 Mitigate by:</p>
-<ul><li>Using smaller models when possible (Phi instead of Llama-70B)</li>
+<ul><li>Using smaller models when possible (Phi-4-mini instead of a
+100B-class model)</li>
 <li>Quantizing models (4-bit instead of 32-bit)</li>
 <li>Batching work for efficiency</li>
 <li>Considering environmental impact when choosing scale</li>
@@ -537,7 +537,7 @@ scale</li>
       <div class="d-none d-sm-none d-md-block">
         <a class="chapter-link" href="08-ollama-local-llms.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Previous: Ollama and Local
+          Previous: Running Local LLMs
         </a>
         <a class="chapter-link float-end" href="10-ethics-next-steps.html" rel="next">
           Next: Ethical...
@@ -588,7 +588,7 @@ scale</li>
   "url": "https://pomona-college.github.io/hpc-ai-tools/09-responsible-practices.html",
   "identifier": "https://pomona-college.github.io/hpc-ai-tools/09-responsible-practices.html",
   "dateCreated": "2026-03-05",
-  "dateModified": "2026-08-24",
+  "dateModified": "2026-08-25",
   "datePublished": "2026-08-25"
 }
 

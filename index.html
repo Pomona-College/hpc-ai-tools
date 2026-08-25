@@ -253,7 +253,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-ollama-local-llms.html">8. Ollama and Local LLMs</a>
+        <a href="08-ollama-local-llms.html">8. Running Local LLMs on Sagehen</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -379,20 +379,47 @@ AI demo)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="no-installation-required">No Installation Required!<a class="anchor" aria-label="anchor" href="#no-installation-required"></a></h3>
-<p>This workshop uses cloud AI tools (ChatGPT, Claude, Bard) and
-optional local setup. No special software needs to be installed in
-advance.</p>
+<p>This workshop uses cloud AI assistants and an optional local setup.
+No special software needs to be installed in advance.</p>
 </div>
 <div class="section level3">
 <h3 id="optional-try-the-tools-in-advance">Optional: Try the Tools in Advance<a class="anchor" aria-label="anchor" href="#optional-try-the-tools-in-advance"></a></h3>
-<p>If you want to get familiar with external AI tools:</p>
+<p>If you want to get familiar with external AI tools, the three most
+commonly used at Pomona are:</p>
 <ul><li>
-<strong>ChatGPT</strong>: <a href="https://chat.openai.com" class="external-link uri">https://chat.openai.com</a> (free tier available)</li>
+<strong>ChatGPT</strong> (OpenAI): <a href="https://chatgpt.com" class="external-link uri">https://chatgpt.com</a>
+</li>
 <li>
-<strong>Claude</strong>: <a href="https://claude.ai" class="external-link uri">https://claude.ai</a> (free tier available)</li>
+<strong>Claude</strong> (Anthropic): <a href="https://claude.ai" class="external-link uri">https://claude.ai</a>
+</li>
 <li>
-<strong>Bard</strong>: <a href="https://bard.google.com" class="external-link uri">https://bard.google.com</a> (free tier available)</li>
-</ul></div>
+<strong>Gemini</strong> (Google): <a href="https://gemini.google.com" class="external-link uri">https://gemini.google.com</a>
+</li>
+</ul><p>Each offers a no-cost tier. Sign in with a personal account for the
+workshop exercises — we will only ever use PUBLIC example data in
+them.</p>
+<div id="product-names-change-faster-than-this-lesson" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="product-names-change-faster-than-this-lesson" class="callout-inner">
+<h3 class="callout-title">Product Names Change Faster Than This
+Lesson</h3>
+<div class="callout-content">
+<p>Google’s assistant was called <strong>Bard</strong> until February
+2024, when it was renamed <strong>Gemini</strong>;
+<code>bard.google.com</code> now redirects to
+<code>gemini.google.com</code>. Similarly, <code>chat.openai.com</code>
+now redirects to <code>chatgpt.com</code>.</p>
+<p>Expect names, tiers and model numbers to keep moving. Nothing in this
+workshop depends on a particular product — the rules you will learn are
+about <strong>the data you are handling</strong>, which is exactly why
+they outlast the tools.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="during-the-workshop">During the Workshop<a class="anchor" aria-label="anchor" href="#during-the-workshop"></a></h2>
@@ -400,8 +427,8 @@ advance.</p>
 <h3 id="tools-well-use">Tools We’ll Use<a class="anchor" aria-label="anchor" href="#tools-well-use"></a></h3>
 <div class="section level4">
 <h4 id="external-ai-cloud-based">External AI (Cloud-Based)<a class="anchor" aria-label="anchor" href="#external-ai-cloud-based"></a></h4>
-<ul><li>ChatGPT, Claude, or Bard for examples</li>
-<li>Your Pomona email or personal account</li>
+<ul><li>ChatGPT, Claude or Gemini for examples</li>
+<li>A personal account is fine; we use PUBLIC data only</li>
 <li>Works from any browser</li>
 </ul></div>
 <div class="section level4">
@@ -421,9 +448,10 @@ advance.</p>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1" aria-label="code-block-1-1"></a><span class="co"># Log in</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1" aria-label="code-block-1-2"></a><span class="fu">ssh</span> your_netid@sagehen.hpc.pomona.edu</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1" aria-label="code-block-1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1" aria-label="code-block-1-4"></a><span class="co"># Load ML tools</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1" aria-label="code-block-1-5"></a><span class="ex">module</span> load miniconda3   <span class="co"># PyTorch comes from conda: conda activate pytorch_env</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1" aria-label="code-block-1-6"></a><span class="ex">module</span> load miniconda3</span></code></pre>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1" aria-label="code-block-1-4"></a><span class="co"># Load conda. There is no pytorch/tensorflow module on Sagehen --</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1" aria-label="code-block-1-5"></a><span class="co"># frameworks live inside your conda environment.</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1" aria-label="code-block-1-6"></a><span class="ex">module</span> load miniconda3</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1" aria-label="code-block-1-7"></a><span class="ex">conda</span> activate ml_env</span></code></pre>
 </div>
 </div>
 <div class="section level4">
@@ -459,7 +487,7 @@ not a coding workshop.</p>
 </ul></div>
 <div class="section level3">
 <h3 id="part-4-practical-implementation-optional-hands-on">Part 4: Practical Implementation (Optional Hands-On)<a class="anchor" aria-label="anchor" href="#part-4-practical-implementation-optional-hands-on"></a></h3>
-<ul><li>Setting up local Llama model (for RESTRICTED data)</li>
+<ul><li>Setting up a local model on Sagehen (for RESTRICTED data)</li>
 <li>Building responsible AI workflows</li>
 <li>Asking for help from ITS</li>
 </ul></div>
@@ -476,8 +504,9 @@ not a coding workshop.</p>
 <div class="section level3">
 <h3 id="tool-selection-core-skill">2. Tool Selection (Core Skill)<a class="anchor" aria-label="anchor" href="#tool-selection-core-skill"></a></h3>
 <p>Given data classification, choose appropriate tool:</p>
-<ul><li>ChatGPT/Claude/Bard? (Only for PUBLIC)</li>
-<li>Local Llama on Sagehen? (For RESTRICTED)</li>
+<ul><li>ChatGPT/Claude/Gemini? (Only for PUBLIC)</li>
+<li>A local open-weight model on Sagehen? (For PROPRIETARY and
+RESTRICTED)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="compliance-essential-knowledge">3. Compliance (Essential Knowledge)<a class="anchor" aria-label="anchor" href="#compliance-essential-knowledge"></a></h3>
@@ -539,7 +568,10 @@ OVPR</li>
 </ul></div>
 <div class="section level3">
 <h3 id="resources-to-review-optional">Resources to Review (Optional)<a class="anchor" aria-label="anchor" href="#resources-to-review-optional"></a></h3>
-<ul><li>Pomona College AI Policy (will be linked in Episode 2)</li>
+<ul><li>
+<a href="https://www.pomona.edu/data-governance" class="external-link">Use of AI Tools
+with Pomona College Data</a> (campus login required; covered in Episode
+3)</li>
 <li>FERPA Overview: <a href="https://www2.ed.gov/policy/gen/guid/fpco/ferpa/" class="external-link uri">https://www2.ed.gov/policy/gen/guid/fpco/ferpa/</a>
 </li>
 <li>HIPAA Basics: <a href="https://www.hhs.gov/hipaa/" class="external-link uri">https://www.hhs.gov/hipaa/</a>
@@ -584,8 +616,10 @@ notes)</li>
 <div class="section level2">
 <h2 id="post-workshop-resources">Post-Workshop Resources<a class="anchor" aria-label="anchor" href="#post-workshop-resources"></a></h2>
 <p>After the workshop, continue learning:</p>
-<ul><li>Pomona AI Policy (full text)</li>
-<li>Local Llama setup guide</li>
+<ul><li>
+<a href="https://www.pomona.edu/data-governance" class="external-link">Use of AI Tools
+with Pomona College Data</a> (full text)</li>
+<li>Local model setup guide</li>
 <li>Compliance checklists</li>
 <li>Case studies and examples</li>
 </ul><p>These will be provided at the end of the workshop.

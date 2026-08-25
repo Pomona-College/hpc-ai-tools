@@ -264,7 +264,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08-ollama-local-llms.html">8. Ollama and Local LLMs</a>
+        <a href="08-ollama-local-llms.html">8. Running Local LLMs on Sagehen</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -346,7 +346,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>The AI Landscape for Researchers</h1>
-        <p>Last updated on 2026-08-24 |
+        <p>Last updated on 2026-08-25 |
 
         <a href="https://github.com/Pomona-College/hpc-ai-tools/edit/main/episodes/01-ai-landscape.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -429,10 +429,29 @@ cloud GPU costs scale rapidly with intensive compute</li>
 <p><strong>Cloud-based (proprietary):</strong> ChatGPT (OpenAI), Claude
 (Anthropic), Gemini (Google). Per-token pricing; best for quick queries
 with non-sensitive data.</p>
-<p><strong>Local (open-source, can run on Sagehen):</strong> Llama 2/3
-(Meta), Mistral, Phi (Microsoft), Qwen. Sizes range from 7B to 70B
-parameters (15GB-350GB VRAM). Best for sensitive data, fine-tuning, and
-cost-effective batch work.</p>
+<p><strong>Local (open-weight, can run on Sagehen):</strong> gpt-oss
+(OpenAI), Qwen (Alibaba), Mistral, Phi (Microsoft), Gemma (Google),
+Llama (Meta). Useful sizes run from about 4B to over 100B parameters.
+Best for sensitive data, fine-tuning, and cost-effective batch work.</p>
+<div id="open-weight-is-not-the-same-as-open-source" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="open-weight-is-not-the-same-as-open-source" class="callout-inner">
+<h3 class="callout-title">“Open-Weight” Is Not the Same as
+“Open-Source”</h3>
+<div class="callout-content">
+<p>You can download and run these models, but the licences differ
+sharply. Some are Apache 2.0 or MIT; others carry custom terms with use
+restrictions, and some require you to request access before downloading.
+Training data is almost never released, so none are open-source in the
+sense a software licence means it.</p>
+<p>Check the licence before you build a published result on a model —
+see Episode 10.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="computer-vision-and-scientific-ml">Computer Vision and Scientific ML<a class="anchor" aria-label="anchor" href="#computer-vision-and-scientific-ml"></a></h3>
@@ -445,35 +464,66 @@ imagery analysis.</p>
 </div>
 <div class="section level3">
 <h3 id="model-size-and-requirements">Model Size and Requirements<a class="anchor" aria-label="anchor" href="#model-size-and-requirements"></a></h3>
+<p>Rather than memorise a model list that will be out of date within
+months, learn the arithmetic:</p>
+<pre><code>VRAM for weights ≈ parameters × bytes-per-parameter
+  16-bit → 2 bytes | 8-bit → 1 byte | 4-bit → 0.5 bytes
+Then add 20-40% for activations and the KV cache; much more for long contexts.</code></pre>
+<p>So a 7B model needs roughly 14 GB at 16-bit, or 3.5 GB at 4-bit, plus
+headroom.</p>
+<p>Worked examples, <strong>accurate as of August 2026</strong> — check
+current sizes on Hugging Face before planning a job:</p>
 <table class="table"><thead><tr><th>Model</th>
-<th>Size</th>
-<th>VRAM</th>
-<th>Speed</th>
-</tr></thead><tbody><tr><td>Phi 2.7B</td>
-<td>3GB</td>
-<td>8GB</td>
-<td>Very Fast</td>
-</tr><tr><td>Llama 7B (4-bit)</td>
-<td>4GB</td>
-<td>8GB</td>
-<td>Fast</td>
-</tr><tr><td>Mistral 7B (4-bit)</td>
-<td>4GB</td>
-<td>8GB</td>
-<td>Very Fast</td>
-</tr><tr><td>Llama 13B (4-bit)</td>
-<td>8GB</td>
-<td>16GB</td>
-<td>Medium</td>
-</tr><tr><td>Llama 70B (4-bit)</td>
-<td>38GB</td>
-<td>48GB+</td>
-<td>Slower</td>
+<th>Precision</th>
+<th>Weights</th>
+<th>Sensible GPU</th>
+</tr></thead><tbody><tr><td>Phi-4-mini (3.8B)</td>
+<td>4-bit</td>
+<td>~2 GB</td>
+<td>Any</td>
+</tr><tr><td>Qwen3 8B</td>
+<td>4-bit</td>
+<td>~4 GB</td>
+<td>L40S</td>
+</tr><tr><td>gpt-oss-20b</td>
+<td>native</td>
+<td>~16 GB</td>
+<td>L40S</td>
+</tr><tr><td>Qwen3 32B</td>
+<td>4-bit</td>
+<td>~16 GB</td>
+<td>L40S</td>
+</tr><tr><td>gpt-oss-120b</td>
+<td>native</td>
+<td>~60 GB</td>
+<td>A100</td>
+</tr><tr><td>Llama 4 Scout (109B total)</td>
+<td>4-bit</td>
+<td>~55 GB</td>
+<td>A100</td>
 </tr><tr><td>Stable Diffusion XL</td>
-<td>7GB</td>
-<td>24GB</td>
-<td>Slower</td>
-</tr></tbody></table><div id="the-ai-tool-decision-is-data-driven" class="callout">
+<td>16-bit</td>
+<td>~7 GB</td>
+<td>L40S</td>
+</tr></tbody></table><div id="mixture-of-experts-models-still-need-all-the-weights" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="mixture-of-experts-models-still-need-all-the-weights" class="callout-inner">
+<h3 class="callout-title">Mixture-of-Experts Models Still Need All the
+Weights</h3>
+<div class="callout-content">
+<p>Several current models are <strong>mixture-of-experts</strong>: Llama
+4 Scout has 109B total parameters but activates only about 17B per
+token. That makes it <em>faster</em> than its size suggests, not
+<em>smaller</em>. All 109B must be resident in GPU memory.</p>
+<p>Size your GPU request from <strong>total</strong> parameters. Sizing
+from the active count is a common and expensive mistake.</p>
+</div>
+</div>
+</div>
+<div id="the-ai-tool-decision-is-data-driven" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -498,11 +548,11 @@ determined.</p>
 <div class="callout-content">
 <p>For each model below, identify which Sagehen GPU (L40S 48 GB, A100 80
 GB, or RTX PRO 6000 96 GB) is the minimum required:</p>
-<ol style="list-style-type: decimal"><li>Phi 2.7B (5GB VRAM)</li>
-<li>Llama 13B 4-bit quantized (8GB VRAM)</li>
-<li>Llama 70B 4-bit quantized (40GB VRAM)</li>
+<ol style="list-style-type: decimal"><li>Phi-4-mini 3.8B at 4-bit (~5GB VRAM)</li>
+<li>Qwen3 32B at 4-bit (~20GB VRAM)</li>
+<li>gpt-oss-120b (~60GB VRAM)</li>
 <li>Stable Diffusion XL (24GB VRAM)</li>
-<li>Llama 70B 4-bit serving a 128K-token context (85GB VRAM)</li>
+<li>gpt-oss-120b serving a 128K-token context (~90GB VRAM)</li>
 </ol></div>
 </div>
 </div>
@@ -511,26 +561,29 @@ GB, or RTX PRO 6000 96 GB) is the minimum required:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>
-<strong>Phi 2.7B</strong>: L40S (48GB) – 5GB used, enormous
+<strong>Phi-4-mini</strong>: L40S (48GB) – 5GB used, enormous
 headroom</li>
 <li>
-<strong>Llama 13B 4-bit</strong>: L40S (48GB) – 8GB used, room for
+<strong>Qwen3 32B 4-bit</strong>: L40S (48GB) – 20GB used, room for
 long contexts</li>
 <li>
-<strong>Llama 70B 4-bit</strong>: A100 (80GB) – needs 40GB, exceeds
-L40S for comfort</li>
+<strong>gpt-oss-120b</strong>: A100 (80GB) – needs 60GB, exceeds
+L40S</li>
 <li>
 <strong>Stable Diffusion XL</strong>: L40S (48GB) – 24GB fits, with
 room for batching</li>
 <li>
-<strong>Llama 70B, 128K context</strong>: RTX PRO 6000 (96GB) – the
-KV cache pushes total memory past the A100’s 80GB</li>
+<strong>gpt-oss-120b, 128K context</strong>: RTX PRO 6000 (96GB) –
+the KV cache pushes total memory past the A100’s 80GB</li>
 </ol><p>The L40S is the least contended card, so small and mid-sized jobs
 should start there. Scale up only when the memory figure genuinely
 requires it.</p>
+<p>Notice that items 3 and 5 are the <em>same model</em>: context length
+alone moved the job up a GPU tier. Estimate your context budget before
+you request a card.</p>
 </div>
 </div>
 </div>
@@ -615,7 +668,7 @@ selection</li>
   "url": "https://pomona-college.github.io/hpc-ai-tools/instructor/01-ai-landscape.html",
   "identifier": "https://pomona-college.github.io/hpc-ai-tools/instructor/01-ai-landscape.html",
   "dateCreated": "2026-03-05",
-  "dateModified": "2026-08-24",
+  "dateModified": "2026-08-25",
   "datePublished": "2026-08-25"
 }
 
