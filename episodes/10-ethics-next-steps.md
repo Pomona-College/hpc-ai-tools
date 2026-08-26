@@ -115,7 +115,7 @@ Mitigation:
 ## Next Steps
 
 1. **Classify your data** using the decision tree from Episode 4
-2. **Set up your environment** on Sagehen following Episode 7
+2. **Set up your environment** on Sagehen HPC following Episode 7
 3. **Start small** with Phi-4-mini or an 8B-class model before scaling up
 4. **Document everything** -- AI usage logs, verification steps, disclosures
 5. **Stay current** with evolving institutional policies and AI capabilities

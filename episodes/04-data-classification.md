@@ -41,7 +41,7 @@ Information restricted to specific individuals or organizations.
 patent applications, NDA-covered research, proprietary algorithms, grant-funded
 research with restrictions.
 
-**AI Tool Policy:** MUST use local AI only (Sagehen GPUs). External AI requires
+**AI Tool Policy:** MUST use local AI only (Sagehen HPC GPUs). External AI requires
 explicit written permission from all stakeholders. Encryption recommended.
 
 ### Tier 3: RESTRICTED

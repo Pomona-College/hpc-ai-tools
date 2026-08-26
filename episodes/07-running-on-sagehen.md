@@ -1,5 +1,5 @@
 ---
-title: "Running Models on Sagehen"
+title: "Running Models on Sagehen HPC"
 teaching: 15
 exercises: 10
 ---
@@ -21,7 +21,7 @@ exercises: 10
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 
-## Sagehen Storage for AI Work
+## Sagehen HPC Storage for AI Work
 
 | Location | Quota | Use For |
 |----------|-------|---------|
@@ -81,7 +81,7 @@ export HF_HOME=/bigdata/lab/<labname>/huggingface_cache
 
 Before requesting a GPU, check the `gpu` partition's current state with `sinfo -p gpu`:
 
-![Checking the gpu partition before requesting a session: `sinfo -p gpu` shows which GPU nodes are up.](fig/07-sinfo-gpu-partition.png){alt='Terminal output of sinfo -p gpu on Sagehen listing the gpu partition with a 30-day time limit and its GPU nodes, showing their current allocation state.'}
+![Checking the gpu partition before requesting a session: `sinfo -p gpu` shows which GPU nodes are up.](fig/07-sinfo-gpu-partition.png){alt='Terminal output of sinfo -p gpu on Sagehen HPC listing the gpu partition with a 30-day time limit and its GPU nodes, showing their current allocation state.'}
 
 ```bash
 srun --partition=gpu --gres=gpu:1 --mem=64G \

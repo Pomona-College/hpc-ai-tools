@@ -38,7 +38,7 @@ Pomona infrastructure. This decision is about **compliance**, not preference.
 
 - **Data privacy**: Restricted data (FERPA, medical, financial) cannot go to
   external services
-- **Computational power**: Sagehen's 10 GPUs — A100 (80 GB), L40S (48 GB),
+- **Computational power**: Sagehen HPC's 10 GPUs — A100 (80 GB), L40S (48 GB),
   and RTX PRO 6000 (96 GB ECC) — handle production workloads
 - **Data locality**: Working with large datasets is faster on local storage
   than uploading to cloud services

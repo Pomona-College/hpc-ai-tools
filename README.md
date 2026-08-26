@@ -4,7 +4,7 @@ Pomona College HPC Workshop Series
 
 ## Overview
 
-This workshop addresses the growing use of AI tools, large language models, and generative AI in research and education. Participants learn Pomona College's AI policy, data classification and sensitivity considerations, when to use local HPC systems versus cloud AI services, how to run AI models on Sagehen, and responsible use practices. The workshop covers compliance implications, data privacy, and ethical considerations for academic and research applications of AI.
+This workshop addresses the growing use of AI tools, large language models, and generative AI in research and education. Participants learn Pomona College's AI policy, data classification and sensitivity considerations, when to use local HPC systems versus cloud AI services, how to run AI models on Sagehen HPC, and responsible use practices. The workshop covers compliance implications, data privacy, and ethical considerations for academic and research applications of AI.
 
 ## Episodes
 
