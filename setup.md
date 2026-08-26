@@ -56,7 +56,7 @@ you are handling**, which is exactly why they outlast the tools.
 
 ### Software for Hands-On Activities
 
-#### If You Have Sagehen Access
+#### If You Have Sagehen HPC Access
 ```bash
 # Log in
 ssh your_netid@sagehen.hpc.pomona.edu
@@ -67,7 +67,7 @@ module load miniconda3
 conda activate ml_env
 ```
 
-#### If You Don't Have Sagehen Access
+#### If You Don't Have Sagehen HPC Access
 
 No problem! You can:
 

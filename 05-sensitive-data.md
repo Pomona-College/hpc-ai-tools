@@ -36,7 +36,7 @@ per violation.
 
 - Do NOT upload student work, grades, or feedback to any external AI service
 - Do NOT ask an external AI "What's wrong with this student's paper?"
-- DO use a local model on Sagehen, or anonymize completely
+- DO use a local model on Sagehen HPC, or anonymize completely
 - DO ask "What's the grammatical issue in this sentence?" (without student context)
 
 ## HIPAA (Healthcare Data)
@@ -65,7 +65,7 @@ have international employees) constitutes technology export without a license
 **Safe approach:** All computation on US infrastructure (Sagehen), no cloud AI,
 consult the export control officer.
 
-## Working with Restricted Data on Sagehen
+## Working with Restricted Data on Sagehen HPC
 
 ```bash
 # Use gocryptfs for encryption at rest

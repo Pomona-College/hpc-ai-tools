@@ -16,13 +16,13 @@ exercises: 5
 
 - Distinguish between LLMs, vision models, and scientific ML models
 - Understand model sizes, quantization, and GPU requirements
-- Compare open-source models available on Sagehen with cloud alternatives
+- Compare open-source models available on Sagehen HPC with cloud alternatives
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Large Language Models in Detail
 
-### Open-Weight Models for Sagehen
+### Open-Weight Models for Sagehen HPC
 
 Specific models turn over quickly. Choose along three axes that do not:
 **licence**, **size**, and whether the download is **gated**.

@@ -48,7 +48,7 @@
 - Export-controlled: Research restricted by ITAR/EAR
 - Financial: Credit cards, bank accounts
 
-**Policy**: NEVER external AI; use Sagehen + gocryptfs encryption for storage
+**Policy**: NEVER external AI; use Sagehen HPC + gocryptfs encryption for storage
 
 ---
 
@@ -149,7 +149,7 @@ question: *where does this data go, and under whose terms?*
 
 ---
 
-## Local AI Models on Sagehen
+## Local AI Models on Sagehen HPC
 
 ### Sizing rule (this outlasts any model list)
 
@@ -415,7 +415,7 @@ Answer these honestly:
 
 ---
 
-## Useful Commands (Sagehen)
+## Useful Commands (Sagehen HPC)
 
 ```bash
 # SSH into Sagehen

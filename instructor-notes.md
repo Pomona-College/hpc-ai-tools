@@ -142,7 +142,7 @@ Present 5 scenarios, have learners vote on classification:
 **Local AI Setup**:
 - Show gocryptfs for encryption (safe storage)
 - Explain why encryption matters
-- Mention that Sagehen is US infrastructure (export control safe)
+- Mention that Sagehen HPC is US infrastructure (export control safe)
 
 **Interactive Activities**:
 1. **Scenario Analysis**: Present 3 research projects, classify all data
@@ -164,7 +164,7 @@ Present 5 scenarios, have learners vote on classification:
 
 ---
 
-### Episode 4: Running AI Models Locally on Sagehen (25 min teaching + 20 min optional hands-on)
+### Episode 4: Running AI Models Locally on Sagehen HPC (25 min teaching + 20 min optional hands-on)
 **Goal**: Show practical path for handling sensitive data safely
 
 **Two Options**:

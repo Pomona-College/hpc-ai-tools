@@ -93,7 +93,7 @@ possible legal prosecution, FERPA notification to affected students.
 | Contact | For |
 |---------|-----|
 | Your Advisor | Research context, data questions |
-| its-hpc@pomona.edu | Sagehen, local AI, data classification |
+| its-hpc@pomona.edu | Sagehen HPC, local AI, data classification |
 | OVPR (ovpr@pomona.edu) | Export control, IRB, compliance |
 | Library Research Support | Citation, attribution, data management |
 | Provost's Office | Academic integrity, policy clarifications |

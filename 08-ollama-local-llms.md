@@ -1,5 +1,5 @@
 ---
-title: "Running Local LLMs on Sagehen"
+title: "Running Local LLMs on Sagehen HPC"
 teaching: 15
 exercises: 10
 ---
@@ -39,7 +39,7 @@ working.)
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 
-## Setting Up a Local LLM on Sagehen
+## Setting Up a Local LLM on Sagehen HPC
 
 ### Step 1: Choose a Model
 

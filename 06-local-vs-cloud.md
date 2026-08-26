@@ -6,7 +6,7 @@ exercises: 5
 
 :::::::::::::::::::::::::::::::::::::: questions
 
-- When should I use cloud AI vs. local AI on Sagehen?
+- When should I use cloud AI vs. local AI on Sagehen HPC?
 - What are the tradeoffs in quality, speed, privacy, and cost?
 
 ::::::::::::::::::::::::::::::::::::::::::::::
@@ -31,7 +31,7 @@ reproducibility.
 
 **Best for:** PUBLIC data, quick answers, rapid prototyping.
 
-## Local AI (Run on Sagehen)
+## Local AI (Run on Sagehen HPC)
 
 **Pros:** Data stays on Pomona infrastructure, can use RESTRICTED and
 PROPRIETARY data, no subscription cost, full control, reproducible results.
