@@ -25,3 +25,9 @@ For questions or support, contact the Research Computing team at
 :::::::::::::::::::::::::::::::::::::
 
 Designed for all researchers and students, this workshop assumes no prior AI knowledge. You will gain practical understanding of how to responsibly leverage AI tools while protecting your research, respecting intellectual property, and adhering to Pomona College policies.
+
+## Acknowledgments
+
+Developed by **Andrew Wilson**, Director of Research Computing and Digital
+Scholarship at Pomona College, with **Andrei Motchenko**, who tested, edited
+and produced screenshots for the workshop series.
