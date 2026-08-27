@@ -401,12 +401,32 @@
         <h1>All Images</h1>
         
 <section id="01-ai-landscape"><h2 class="section-heading"><a href="01-ai-landscape.html">The AI Landscape for Researchers</a></h2>
-<hr class="half-width"></section><section id="02-types-of-models"><h2 class="section-heading"><a href="02-types-of-models.html">Types of AI Models</a></h2>
-<hr class="half-width"></section><section id="03-pomona-ai-policy"><h2 class="section-heading"><a href="03-pomona-ai-policy.html">Pomona's AI Use Policy</a></h2>
+<hr class="half-width">
+<h3 id="01-ai-landscape-figure-1">Figure 1</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Three groups of AI tool. Hosted assistants, including ChatGPT from OpenAI, Claude from Anthropic and Gemini from Google, are for PUBLIC data only unless ITS holds a contract covering them. Open-weight models such as gpt-oss, Qwen, Mistral and Phi-4-mini can be run on Sagehen HPC with any data tier. Scientific models such as AlphaFold, ESMFold and weather and climate models are domain tools usually run as batch jobs. A note says that where the data goes decides which column you may use, not which model is best.’</p>
+<figure><img src="../fig/01-ai-landscape.png" alt="Three groups of AI tool. Hosted assistants, including ChatGPT from OpenAI, Claude from Anthropic and Gemini from Google, are for PUBLIC data only unless ITS holds a contract covering them. Open-weight models such as gpt-oss, Qwen, Mistral and Phi-4-mini can be run on Sagehen HPC with any data tier. Scientific models such as AlphaFold, ESMFold and weather and climate models are domain tools usually run as batch jobs. A note says that where the data goes decides which column you may use, not which model is best." class="figure mx-auto d-block"><div class="figcaption">Three kinds of tool, and the data rule attached
+to each.</div>
+</figure><hr></section><section id="02-types-of-models"><h2 class="section-heading"><a href="02-types-of-models.html">Types of AI Models</a></h2>
+<hr class="half-width">
+<h3 id="02-types-of-models-figure-1">Figure 1</h3>
+<p aria-hidden="true">Image 1 of 1: ‘A decision starting from whether you can use an AI tool, branching on the data tier. PUBLIC data may use any tool, hosted or local. PROPRIETARY data may use local models on Sagehen HPC, or a hosted one with written approval. RESTRICTED data may use local models only and never a hosted service. A note advises classifying the data before opening the tool rather than after pasting something in.’</p>
+<figure><img src="../fig/02-responsible-use-decision.png" alt="A decision starting from whether you can use an AI tool, branching on the data tier. PUBLIC data may use any tool, hosted or local. PROPRIETARY data may use local models on Sagehen HPC, or a hosted one with written approval. RESTRICTED data may use local models only and never a hosted service. A note advises classifying the data before opening the tool rather than after pasting something in." class="figure mx-auto d-block"><div class="figcaption">Classify first; the tier narrows the options for
+you.</div>
+</figure><hr></section><section id="03-pomona-ai-policy"><h2 class="section-heading"><a href="03-pomona-ai-policy.html">Pomona's AI Use Policy</a></h2>
 <hr class="half-width"></section><section id="04-data-classification"><h2 class="section-heading"><a href="04-data-classification.html">Data Classification for AI</a></h2>
-<hr class="half-width"></section><section id="05-sensitive-data"><h2 class="section-heading"><a href="05-sensitive-data.html">Sensitive Data and AI</a></h2>
+<hr class="half-width">
+<h3 id="04-data-classification-figure-1">Figure 1</h3>
+<p aria-hidden="true">Image 1 of 1: ‘A table of what is allowed by tier and tool. A hosted assistant is allowed for PUBLIC data, allowed for PROPRIETARY only with approval, and never for RESTRICTED. A local model on Sagehen HPC is allowed for all three tiers. A code assistant working on your own code is allowed for PUBLIC, needs a check with your PI for PROPRIETARY, and is never allowed for RESTRICTED.’</p>
+<figure><img src="../fig/03-data-ai-matrix.png" alt="A table of what is allowed by tier and tool. A hosted assistant is allowed for PUBLIC data, allowed for PROPRIETARY only with approval, and never for RESTRICTED. A local model on Sagehen HPC is allowed for all three tiers. A code assistant working on your own code is allowed for PUBLIC, needs a check with your PI for PROPRIETARY, and is never allowed for RESTRICTED." class="figure mx-auto d-block"><div class="figcaption">The same three tiers, applied to three kinds of
+tool.</div>
+</figure><hr></section><section id="05-sensitive-data"><h2 class="section-heading"><a href="05-sensitive-data.html">Sensitive Data and AI</a></h2>
 <hr class="half-width"></section><section id="06-local-vs-cloud"><h2 class="section-heading"><a href="06-local-vs-cloud.html">Local vs Cloud AI</a></h2>
-<hr class="half-width"></section><section id="07-running-on-sagehen"><h2 class="section-heading"><a href="07-running-on-sagehen.html">Running Models on Sagehen HPC</a></h2>
+<hr class="half-width">
+<h3 id="06-local-vs-cloud-figure-1">Figure 1</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Two panels. A local model on Sagehen HPC keeps data on campus and can be used with any tier including RESTRICTED, at the cost of GPU time, setup effort and a smaller model than the best hosted ones. A hosted assistant offers the strongest models with nothing to set up, but is for PUBLIC data only unless ITS holds a contract, and the data leaves campus while the model may change or be withdrawn without notice.’</p>
+<figure><img src="../fig/04-cloud-vs-local.png" alt="Two panels. A local model on Sagehen HPC keeps data on campus and can be used with any tier including RESTRICTED, at the cost of GPU time, setup effort and a smaller model than the best hosted ones. A hosted assistant offers the strongest models with nothing to set up, but is for PUBLIC data only unless ITS holds a contract, and the data leaves campus while the model may change or be withdrawn without notice." class="figure mx-auto d-block"><div class="figcaption">What each option costs you, stated
+plainly.</div>
+</figure><hr></section><section id="07-running-on-sagehen"><h2 class="section-heading"><a href="07-running-on-sagehen.html">Running Models on Sagehen HPC</a></h2>
 <hr class="half-width">
 <h3 id="07-running-on-sagehen-figure-1">Figure 1</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Terminal output of sinfo -p gpu on Sagehen HPC listing the gpu partition with a 30-day time limit and its GPU nodes, showing their current allocation state.’</p>
@@ -419,8 +439,18 @@ session: <code>sinfo -p gpu</code> shows which GPU nodes are up.</div>
 many are in use — useful for picking a less-contended GPU for
 testing.</div>
 </figure><hr></section><section id="08-ollama-local-llms"><h2 class="section-heading"><a href="08-ollama-local-llms.html">Running Local LLMs on Sagehen HPC</a></h2>
-<hr class="half-width"></section><section id="09-responsible-practices"><h2 class="section-heading"><a href="09-responsible-practices.html">Responsible AI Practices</a></h2>
-<hr class="half-width"></section><section id="10-ethics-next-steps"><h2 class="section-heading"><a href="10-ethics-next-steps.html">Ethical Considerations and Next Steps</a></h2>
+<hr class="half-width">
+<h3 id="08-ollama-local-llms-figure-1">Figure 1</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Terminal on Sagehen HPC. module avail ollama returns no modules found, which ollama reports no ollama in any of the PATH directories, and piping the Ollama install script to shell fails because the user is not in the sudoers file.’</p>
+<figure><img src="../fig/08-ollama-not-available.png" alt="Terminal on Sagehen HPC. module avail ollama returns no modules found, which ollama reports no ollama in any of the PATH directories, and piping the Ollama install script to shell fails because the user is not in the sudoers file." class="figure mx-auto d-block"><div class="figcaption">Checked on Sagehen HPC: no <code>ollama</code>
+module, nothing on the PATH, and installing it needs root.</div>
+</figure><hr></section><section id="09-responsible-practices"><h2 class="section-heading"><a href="09-responsible-practices.html">Responsible AI Practices</a></h2>
+<hr class="half-width">
+<h3 id="09-responsible-practices-figure-1">Figure 1</h3>
+<p aria-hidden="true">Image 1 of 1: ‘A five-step workflow: classify the data, choose a tool that the tier allows, use it and keep the prompts, verify every claim yourself, and disclose it in the write-up. A note stresses that the verification step is not optional, since hosted and local models both fabricate and a plausible-looking citation is the most common failure.’</p>
+<figure><img src="../fig/05-ai-workflow.png" alt="A five-step workflow: classify the data, choose a tool that the tier allows, use it and keep the prompts, verify every claim yourself, and disclose it in the write-up. A note stresses that the verification step is not optional, since hosted and local models both fabricate and a plausible-looking citation is the most common failure." class="figure mx-auto d-block"><div class="figcaption">Verification is a step in the workflow, not an
+afterthought.</div>
+</figure><hr></section><section id="10-ethics-next-steps"><h2 class="section-heading"><a href="10-ethics-next-steps.html">Ethical Considerations and Next Steps</a></h2>
 <hr class="half-width"></section>
 </div>
     </main>
@@ -471,8 +501,8 @@ testing.</div>
   "url": "https://pomona-college.github.io/hpc-ai-tools/instructor/images.html",
   "identifier": "https://pomona-college.github.io/hpc-ai-tools/instructor/images.html",
   "dateCreated": "2026-03-05",
-  "dateModified": "2026-08-26",
-  "datePublished": "2026-08-26"
+  "dateModified": "2026-08-27",
+  "datePublished": "2026-08-27"
 }
 
   </script><script>
