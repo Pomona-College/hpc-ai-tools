@@ -31,6 +31,8 @@ reproducibility.
 
 **Best for:** PUBLIC data, quick answers, rapid prototyping.
 
+![What each option costs you, stated plainly.](fig/04-cloud-vs-local.png){alt='Two panels. A local model on Sagehen HPC keeps data on campus and can be used with any tier including RESTRICTED, at the cost of GPU time, setup effort and a smaller model than the best hosted ones. A hosted assistant offers the strongest models with nothing to set up, but is for PUBLIC data only unless ITS holds a contract, and the data leaves campus while the model may change or be withdrawn without notice.'}
+
 ## Local AI (Run on Sagehen HPC)
 
 **Pros:** Data stays on Pomona infrastructure, can use RESTRICTED and

@@ -39,6 +39,8 @@ working.)
 
 ::::::::::::::::::::::::::::::::::::::::::::::
 
+![Checked on Sagehen HPC: no `ollama` module, nothing on the PATH, and installing it needs root.](fig/08-ollama-not-available.png){alt='Terminal on Sagehen HPC. module avail ollama returns no modules found, which ollama reports no ollama in any of the PATH directories, and piping the Ollama install script to shell fails because the user is not in the sudoers file.'}
+
 ## Setting Up a Local LLM on Sagehen HPC
 
 ### Step 1: Choose a Model
