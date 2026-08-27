@@ -55,8 +55,9 @@ numbers, addresses), biometric data.
 **AI Tool Policy:** LOCAL AI ONLY with mandatory AES-256-GCM encryption. No
 exceptions.
 
-::::::::::::::::::::::::::::::::::::: callout
+![The same three tiers, applied to three kinds of tool.](fig/03-data-ai-matrix.png){alt='A table of what is allowed by tier and tool. A hosted assistant is allowed for PUBLIC data, allowed for PROPRIETARY only with approval, and never for RESTRICTED. A local model on Sagehen HPC is allowed for all three tiers. A code assistant working on your own code is allowed for PUBLIC, needs a check with your PI for PROPRIETARY, and is never allowed for RESTRICTED.'}
 
+::::::::::::::::::::::::::::::::::::: callout
 ## When in Doubt, Classify as RESTRICTED
 
 If you are unsure about classification, default to RESTRICTED. You can always

@@ -35,6 +35,8 @@ Modern AI makes plagiarism easier but also more detectable. Requirements:
 The model produced: [quote]. I then revised and verified all claims with primary
 sources."
 
+![Verification is a step in the workflow, not an afterthought.](fig/05-ai-workflow.png){alt='A five-step workflow: classify the data, choose a tool that the tier allows, use it and keep the prompts, verify every claim yourself, and disclose it in the write-up. A note stresses that the verification step is not optional, since hosted and local models both fabricate and a plausible-looking citation is the most common failure.'}
+
 ## Hallucinations and Verification
 
 AI models generate plausible-sounding text that is sometimes false. LLMs

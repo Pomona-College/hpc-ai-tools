@@ -56,8 +56,9 @@ Google's own Gemma terms, **not** an OSI-approved open-source licence.
 **Llama 4 (Meta)** — mixture-of-experts; Scout is 109B total / 17B active.
 Requires accepting the Llama Community Licence before download.
 
-::::::::::::::::::::::::::::::::::::: callout
+![Classify first; the tier narrows the options for you.](fig/02-responsible-use-decision.png){alt='A decision starting from whether you can use an AI tool, branching on the data tier. PUBLIC data may use any tool, hosted or local. PROPRIETARY data may use local models on Sagehen HPC, or a hosted one with written approval. RESTRICTED data may use local models only and never a hosted service. A note advises classifying the data before opening the tool rather than after pasting something in.'}
 
+::::::::::::::::::::::::::::::::::::: callout
 ## Prefer Ungated Models Unless You Need Otherwise
 
 A gated model (Llama, among others) means: accept a licence on the model's

@@ -24,8 +24,9 @@ exercises: 5
 Many researchers ask: "Why use Sagehen HPC for AI when services like ChatGPT
 are so easy to use?"
 
-::::::::::::::::::::::::::::::::::::: callout
+![Three kinds of tool, and the data rule attached to each.](fig/01-ai-landscape.png){alt='Three groups of AI tool. Hosted assistants, including ChatGPT from OpenAI, Claude from Anthropic and Gemini from Google, are for PUBLIC data only unless ITS holds a contract covering them. Open-weight models such as gpt-oss, Qwen, Mistral and Phi-4-mini can be run on Sagehen HPC with any data tier. Scientific models such as AlphaFold, ESMFold and weather and climate models are domain tools usually run as batch jobs. A note says that where the data goes decides which column you may use, not which model is best.'}
 
+::::::::::::::::::::::::::::::::::::: callout
 ## Data Privacy is Non-Negotiable for Restricted Data
 
 Cloud AI services cannot be used with restricted data (FERPA, medical records,
